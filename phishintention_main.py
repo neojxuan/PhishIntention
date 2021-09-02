@@ -3,6 +3,8 @@ import os
 import argparse
 from src.element_detector import vis
 import time
+# import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 #####################################################################################################################
 # ** Step 1: Enter Layout detector, get predicted elements
@@ -213,10 +215,10 @@ if __name__ == "__main__":
 
     # os.environ["CUDA_VISIBLE_DEVICES"]="1"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--folder", help='Input folder path to parse', required=True)
-    parser.add_argument('-r', "--results", help='Input results file name', required=True)
+    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/test_sites')
+    parser.add_argument('-r', "--results", help='Input results file name', default='./test_intention.txt')
     args = parser.parse_args()
-    runit(args)
+    runit(args.folder, args.results)
 
 
 

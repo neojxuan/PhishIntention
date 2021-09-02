@@ -3,7 +3,8 @@ import os
 import argparse
 from src.detectron2_pedia.inference import *
 import time
-
+# import os
+os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"
 
 #####################################################################################################################
 # ** Step 1: Enter Layout detector, get predicted elements
@@ -137,11 +138,11 @@ def runit_pedia(folder, results):
 
 
 
-
 if __name__ == "__main__":
 
     # os.environ["CUDA_VISIBLE_DEVICES"]="1"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--folder", help='Input folder path to parse', required=True)
-    parser.add_argument('-r', "--results", help='Input results file name', required=True)
+    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/test_sites')
+    parser.add_argument('-r', "--results", help='Input results file name', default='./test_pedia.txt')
     args = parser.parse_args()
+    runit_pedia(args.folder, args.results)

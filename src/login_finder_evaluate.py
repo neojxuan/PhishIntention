@@ -193,7 +193,7 @@ if __name__ == '__main__':
         model_type='mixed')
 
     # 600 URLs
-    legitimate_folder = './datasets/600_legitimate'
+    legitimate_folder = './datasets/460_legitimate'
     # urldict = {}
     # if os.path.exists('./datasets/600_legitimate_detectedURL_eager.json'):
     # with open('./datasets/600_legitimate_detectedURL_eager.json', 'rt', encoding='utf-8') as handle:
@@ -203,7 +203,7 @@ if __name__ == '__main__':
 
 
     for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
-        if kk < 152:
+        if kk < 462:
             continue
         print(folder)
         screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
@@ -215,11 +215,14 @@ if __name__ == '__main__':
                                                           login_model=login_model,
                                                           driver=driver)
         total_time = time.time() - start_time
-        with open('./datasets/600_legitimate_runtime.txt', 'a+') as f:
-            f.write(folder+'\t'+str(process_time)+'\t'+str(total_time)+'\n')
+        if folder not in open('./datasets/460_legitimate_runtime.txt').read():
+            with open('./datasets/460_legitimate_runtime.txt', 'a+') as f:
+                f.write(folder+'\t'+str(process_time)+'\t'+str(total_time)+'\n')
 
-    dynamic_total = [float(x.split('\t')[-1]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
-    dynamic_partial = [float(x.split('\t')[-2]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
+    dynamic_total = [float(x.split('\t')[-1]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
+        [float(x.split('\t')[-1]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
+    dynamic_partial = [float(x.split('\t')[-2]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
+        [float(x.split('\t')[-2]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
     print(np.min(dynamic_total), np.median(dynamic_total), np.mean(dynamic_total), np.max(dynamic_total))
     print(np.min(dynamic_partial), np.median(dynamic_partial),  np.mean(dynamic_partial), np.max(dynamic_partial))
 

@@ -133,7 +133,7 @@ def phishpedia_config_OCR(num_classes:int, weights_path:str,
 
     # Initialize model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    from .OCR.siamese_unified.bit_pytorch.models import KNOWN_MODELS
+    from .siamese_OCR.siamese_unified.bit_pytorch.models import KNOWN_MODELS
     model = KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
 
     # Load weights
