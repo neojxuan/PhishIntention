@@ -67,7 +67,7 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Requirements
-Tested with Linux (believe it also works for Windows)
+Tested with Windows/Linux
 
 python=3.7 
 
@@ -83,8 +83,14 @@ pip install -r requirements.txt
 ```
 
 ## Instructions
-### 1. Download all the model files:
-- Make sure your directory tree looks like above
+### 1. Unzip targetlist
+```bash
+cd src/siamese_pedia/
+unzip expand_targetlist.zip -d expand_targetlist
+```
+- If unzip has some problem, try downloading the folder manually [here](https://drive.google.com/file/d/1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I/view?usp=sharing).
+
+### 2. Download all the model files, if you are Windows user you can skip:
 <!-- - First download [Siamese model weights](https://drive.google.com/file/d/1BxJf5lAcNEnnC0In55flWZ89xwlYkzPk/view?usp=sharing) and put it under **src/siamese_OCR/output/targetlist_lr0.01/**, also download [OCR_weights](https://drive.google.com/file/d/15pfVWnZR-at46gqxd50cWhrXemP8oaxp/view?usp=sharing) and put it under **src/siamese_OCR/**
 
 - Download [Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
@@ -100,13 +106,15 @@ put it under **src/element_detector/output/website_lr0.001/**
 
 <!-- - (Optional, if you want to run Phishpedia) Download [Object detector weights for Phishpedia](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2/** -->
+- Make sure your directory tree looks like above
 
-### 2. Download all data files
+
+### 3. Download all data files
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), out of which 4093 are non-credential-requiring phishing, see this [list](https://drive.google.com/file/d/1UVoK-Af3j4ixYy2_jEzG9ZBbYpRkuKFK/view?usp=sharing), shall filter them out when running experiment
 - Download [Benign 25k](https://drive.google.com/file/d/1ymkGrDT8LpTmohOOOnA2yjhEny1XYenj/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
 
-### 3. Run experiment 
+### 4. Run experiment on dataset in paper (Skip if you want to test on your own dataset)
 - For general experiment on Phish 25K nonCRP and Benign 25K:
 please run evaluation scripts
 ```bash
@@ -117,7 +125,8 @@ python -m src.pipeline_eval --data-dir [data folder] \
                             --ts 0.83
 ```
 
-- For phish discovery experiment, the data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
+### 5. Run experiment on customized dataset
+- The data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
 
 ```bash
 python phishintention_main.py --folder [data folder] \
