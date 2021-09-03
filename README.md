@@ -90,19 +90,8 @@ unzip expand_targetlist.zip -d expand_targetlist
 ```
 - If unzip has some problem, try downloading the folder manually [here](https://drive.google.com/file/d/1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I/view?usp=sharing).
 
-### 2. Download all the model files, if you are Windows user you can skip:
-<!-- - First download [Siamese model weights](https://drive.google.com/file/d/1BxJf5lAcNEnnC0In55flWZ89xwlYkzPk/view?usp=sharing) and put it under **src/siamese_OCR/output/targetlist_lr0.01/**, also download [OCR_weights](https://drive.google.com/file/d/15pfVWnZR-at46gqxd50cWhrXemP8oaxp/view?usp=sharing) and put it under **src/siamese_OCR/**
-
-- Download [Logo targetlist](https://drive.google.com/file/d/1_C8NSQYWkpW_-tW8WzFaBr8vDeBAWQ87/view?usp=sharing),
-[Brand domain dictionary](https://drive.google.com/file/d/1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1/view?usp=sharing), put them under **src/siamese_pedia**
-
-- Download [Layout detector weights for PhishIntention](https://drive.google.com/file/d/1HWjE5Fv-c3nCDzLCBc7I3vClP1IeuP_I/view?usp=sharing),
-put it under **src/element_detector/output/website_lr0.001/**
-
-- Download [Credential classifier weights](https://drive.google.com/file/d/1igEMRz0vFBonxAILeYMRWTyd7A9sRirO/view?usp=sharing), put it under **src/credential_classifier/output/Increase_resolution_lr0.005**
-
-- Download [Credential locator weights](https://drive.google.com/file/d/1_O5SALqaJqvWoZDrdIVpsZyCnmSkzQcm/view?usp=sharing), put it under **src/dynamic/login_finder/output/lr0.001_finetune/**
--->
+### 2. Download all the model files, if you are Windows user you can skip, Linux user please do this step:
+- Download all model files [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing) and put them in the locations shown as project directory tree.
 
 <!-- - (Optional, if you want to run Phishpedia) Download [Object detector weights for Phishpedia](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
 put it under **src/detectron2_pedia/output/rcnn_2/** -->
