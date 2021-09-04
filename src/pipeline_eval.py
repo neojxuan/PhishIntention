@@ -7,7 +7,7 @@ import time
 from src.siamese import *
 from src.element_detector import *
 from src.credential import *
-from src.detectron2_pedia.inference import *
+from src.logo_detector_pedia.inference import *
 import argparse
 import errno
 # import torch.multiprocessing as mp
@@ -252,8 +252,8 @@ if __name__ == '__main__':
     elif args.exp == 'pedia':
 
         # element recognition model -- logo only
-        cfg_path = 'src/detectron2_pedia/configs/faster_rcnn.yaml'
-        weights_path = 'src/detectron2_pedia/output/rcnn_2/rcnn_bet365.pth'
+        cfg_path = 'src/logo_detector_pedia/configs/faster_rcnn.yaml'
+        weights_path = 'src/logo_detector_pedia/output/rcnn_2/rcnn_bet365.pth'
         ele_model = config_rcnn(cfg_path, weights_path, conf_threshold=0.05)
 
     # Siamese

@@ -1,7 +1,7 @@
 from phishpedia_config import *
 import os
 import argparse
-from src.detectron2_pedia.inference import *
+from src.logo_detector_pedia.inference import *
 import time
 # import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"

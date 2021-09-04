@@ -2,7 +2,7 @@
 import torch
 import numpy as np
 import src.credential_classifier.bit_pytorch.models as models
-from src.credential_classifier.bit_pytorch.dataloader import GetLoader, ImageLoader, HybridLoader
+from src.credential_classifier.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
 import os
 import matplotlib.pyplot as plt
 from collections import OrderedDict
@@ -107,16 +107,16 @@ if __name__ == '__main__':
     
     # evaluate
     if args.model.startswith('FCMax'):
-        train_set = GetLoader(img_folder='../../datasets/train_merge_imgs_grid2',
-                          annot_path='../../datasets/train_al_grid_merge_coords2.txt')
-        val_set = GetLoader(img_folder='../../datasets/val_merge_imgs',
-                          annot_path='../../datasets/val_merge_coords.txt')    
+        train_set = LayoutLoader(img_folder='../../datasets/train_merge_imgs_grid2',
+                                 annot_path='../../datasets/train_al_grid_merge_coords2.txt')
+        val_set = LayoutLoader(img_folder='../../datasets/val_merge_imgs',
+                               annot_path='../../datasets/val_merge_coords.txt')
         
     elif args.model == 'BiT-M-R50x1':
-        train_set = ImageLoader(img_folder='../datasets/train_merge_imgs',
-                          annot_path='../datasets/train_al_merge_coords2.txt')
-        val_set = ImageLoader(img_folder='../datasets/val_merge_imgs',
-                          annot_path='../datasets/val_merge_coords.txt')
+        train_set = ScreenshotLoader(img_folder='../datasets/train_merge_imgs',
+                                     annot_path='../datasets/train_al_merge_coords2.txt')
+        val_set = ScreenshotLoader(img_folder='../datasets/val_merge_imgs',
+                                   annot_path='../datasets/val_merge_coords.txt')
         
     else:
         train_set = HybridLoader(img_folder='../datasets/train_imgs',

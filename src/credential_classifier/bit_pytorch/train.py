@@ -14,8 +14,9 @@ import src.credential_classifier.bit_pytorch.models as models
 from src.credential_classifier import bit_common
 from src.credential_classifier import bit_hyperrule
 
-from src.credential_classifier.bit_pytorch.dataloader import GetLoader, ImageLoader, HybridLoader, HybridLoaderV2
+from src.credential_classifier.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
 # from torch.utils.tensorboard import SummaryWriter
+import src.credential_classifier.bit_pytorch.fewshot as fs
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="1,0"
 
@@ -29,18 +30,17 @@ def recycle(iterable):
 def mktrainval(args, logger):
 
     """Returns train and validation datasets."""
-#     train_set = ImageLoader(img_folder='../datasets/train_merge_imgs', 
-#                           annot_path='../datasets/train_al_merge_coords2.txt') 
-
-#     val_set = ImageLoader(img_folder='../datasets/val_merge_imgs',
+#     train_set = ScreenshotLoader(img_folder='../datasets/train_merge_imgs',
+#                           annot_path='../datasets/train_al_merge_coords2.txt')
+# #
+#     val_set = ScreenshotLoader(img_folder='../datasets/val_merge_imgs',
 #                          annot_path='../datasets/val_merge_coords.txt')
-
-#     train_set = GetLoader(img_folder='../datasets/train_merge_imgs', 
-#                           annot_path='../datasets/train_al_merge_coords2.txt') 
-
-#     val_set = GetLoader(img_folder='../datasets/val_merge_imgs',
+# #
+#     train_set = LayoutLoader(img_folder='../datasets/train_merge_imgs',
+#                           annot_path='../datasets/train_al_merge_coords2.txt')
+# #
+#     val_set = LayoutLoader(img_folder='../datasets/val_merge_imgs',
 #                          annot_path='../datasets/val_merge_coords.txt')
-
 
     train_set = HybridLoader(img_folder='../datasets/train_imgs', 
                           annot_path='../datasets/train_coords.txt') 
