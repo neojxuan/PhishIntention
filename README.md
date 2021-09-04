@@ -50,11 +50,12 @@ src
                 |__ bit.pth.tar
     |___ util/: other scripts (chromedriver utilities)
     
-    |___ detectron2_pedia/: training script for logo detector (for Phishpedia not PhishIntention)
+    |___ logo_detector_pedia/: training script for logo detector (for Phishpedia not PhishIntention)
     |___ siamese_pedia/: inference script for siamese (for Phishpedia not PhishIntention)
         |__ domain_map.pkl
         |__ expand_targetlist/
     |___ adv_attack/: adversarial attacking scripts
+    |___ layout_matcher/: deprecated scripts
     
     |___ element_detector.py: inference script for abstract layout detector
     |___ credential.py: inference script for CRP classifier
