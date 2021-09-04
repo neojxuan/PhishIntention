@@ -40,6 +40,7 @@ def login_config(rcnn_weights_path: str, rcnn_cfg_path: str, threshold=0.05):
     cfg.merge_from_file(rcnn_cfg_path)
     cfg.MODEL.WEIGHTS = rcnn_weights_path
     cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = threshold # lower this threshold to report more boxes
+    #cfg.MODEL.DEVICE = 'cpu' 
     
     # initialize model
     model = DefaultPredictor(cfg)
