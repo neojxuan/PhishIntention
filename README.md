@@ -117,7 +117,7 @@ python -m src.pipeline_eval --data-dir [data folder] \
 - The data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites) (i.e. there should be an info.txt storing the url, html.txt storing the HTML code, and shot.png storing screenshot):
 
 ```bash
-python phishintention_main.py --folder [data folder] --results output_discover.txt
+python phishintention_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
 ```
 
 <!-- ## Telegram service to label found phishing (Optional)
