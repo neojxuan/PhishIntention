@@ -11,6 +11,8 @@ import cv2
 from src.element_detector import element_config
 from src.credential import credential_config
 import numpy as np
+from bs4 import BeautifulSoup as Soup
+
 
 def temporal_driver(lang_txt:str):
     '''
@@ -47,10 +49,13 @@ def temporal_driver(lang_txt:str):
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')
     options.set_capability('unhandledPromptBehavior', 'dismiss') # dismiss
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_argument("disable-notifications")
+    options.add_argument("disable-gpu")
 
     return options
 
-def keyword_heuristic_debug(driver, orig_url, page_text):
+def keyword_heuristic_debug(driver, orig_url, page_text, obfuscate=False):
     '''
     Keyword based login finder
     :param driver: chrome driver
@@ -63,6 +68,12 @@ def keyword_heuristic_debug(driver, orig_url, page_text):
     '''
     ct = 0 # count number of sign-up/login links
     top3_urls = []
+
+    if obfuscate:
+        login_regex = re.compile(r"log in|login|log on|logon|signin|sign in|authenticat(e|ion)|(user|account|profile|dashboard)", re.I)
+        page_text = login_regex.sub("l0gin", str(page_text))
+        register_regex = re.compile(r"sign up|signup|regist(er|ration)|(create|new).*account", re.I)
+        page_text = register_regex.sub("new_acc0unt", str(page_text))
 
     for i in page_text:
         # looking for keyword
@@ -90,7 +101,7 @@ def keyword_heuristic_debug(driver, orig_url, page_text):
             try:
                 driver.get(orig_url)
                 time.sleep(2)
-                click_popup()
+                # click_popup()
                 alert_msg = driver.switch_to.alert.text
                 driver.switch_to.alert.dismiss()
             except TimeoutException as e:
@@ -146,7 +157,7 @@ def cv_heuristic_debug(driver, orig_url, old_screenshot_path):
         try:
             driver.get(orig_url)
             time.sleep(2)
-            click_popup()
+            # click_popup()
             alert_msg = driver.switch_to.alert.text
             driver.switch_to.alert.dismiss()
         except TimeoutException as e:
@@ -158,9 +169,23 @@ def cv_heuristic_debug(driver, orig_url, old_screenshot_path):
 
     return top3_urls
 
+def rel2abs(html_path):
+    '''
+        Replace relative URLs in html to absolute URLs
+        :param html_path: path to .html file
+    '''
+    soup = Soup(open(html_path, encoding='iso-8859-1').read(), features="lxml")
+    if not soup.find('base'):
+        head = soup.find('head')
+        if head is not None:
+            head = next(head.children, None)
+            base = soup.new_tag('base')
+            base['href'] = os.path.basename(html_path).split('.html')[0]
+            head.insert_before(base)
+    return soup.prettify()
+
 if __name__ == '__main__':
 
-    # FIXME: bad cases: https://7mm.tv very slow, https://www.appfolio.com/ very slow
     ############################ Temporal scripts ################################################################################################################
     from seleniumwire import webdriver
     from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -174,13 +199,15 @@ if __name__ == '__main__':
     capabilities["unexpectedAlertBehaviour"] = "dismiss"  # handle alert
     capabilities["pageLoadStrategy"] = "eager" # FIXME: eager load
 
-    driver = webdriver.Chrome(ChromeDriverManager().install(), desired_capabilities=capabilities, chrome_options=options)
+    driver = webdriver.Chrome(ChromeDriverManager().install(),
+                              desired_capabilities=capabilities,
+                              chrome_options=options)
     driver.set_page_load_timeout(30)  # set timeout to avoid wasting time
     driver.set_script_timeout(30)  # set timeout to avoid wasting time
     driver.implicitly_wait(30)
     helium.set_driver(driver)
     ##################################################################################################################################################################
-
+    # login detector model
     login_cfg, login_model = login_config(rcnn_weights_path='./src/dynamic/login_finder/output/lr0.001_finetune/model_final.pth',
                                           rcnn_cfg_path='./src/dynamic/login_finder/configs/faster_rcnn_login_lr0.001_finetune.yaml')
     # element recognition model
@@ -193,119 +220,151 @@ if __name__ == '__main__':
         model_type='mixed')
 
     # 600 URLs
-    legitimate_folder = './datasets/460_legitimate'
-    # urldict = {}
-    # if os.path.exists('./datasets/600_legitimate_detectedURL_eager.json'):
-    # with open('./datasets/600_legitimate_detectedURL_eager.json', 'rt', encoding='utf-8') as handle:
-    #     urldict = json.load(handle)
-    # print(urldict)
+    legitimate_folder = 'D:/ruofan/xdriver3-open/1003_legitimate_loginbutton_labelled/600_legitimate'
+    urldict = {}
+    if os.path.exists('./datasets/600_legitimate_detectedURL_eager_obfuscate.json'):
+        with open('./datasets/600_legitimate_detectedURL_eager_obfuscate.json', 'rt', encoding='utf-8') as handle:
+            urldict = json.load(handle)
+    print(urldict)
 
-
-
-    for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
-        if kk < 462:
-            continue
-        print(folder)
-        screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
-        info_path = screenshot_path.replace('shot.png', 'info.txt')
-        url = open(info_path, encoding='utf-8').read()
-        start_time = time.time()
-        _, _, successful, process_time = dynamic_analysis(url=url, screenshot_path=screenshot_path,
-                                                          cls_model=cls_model, ele_model=ele_model,
-                                                          login_model=login_model,
-                                                          driver=driver)
-        total_time = time.time() - start_time
-        if folder not in open('./datasets/460_legitimate_runtime.txt').read():
-            with open('./datasets/460_legitimate_runtime.txt', 'a+') as f:
-                f.write(folder+'\t'+str(process_time)+'\t'+str(total_time)+'\n')
-
-    dynamic_total = [float(x.split('\t')[-1]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
-        [float(x.split('\t')[-1]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
-    dynamic_partial = [float(x.split('\t')[-2]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
-        [float(x.split('\t')[-2]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
-    print(np.min(dynamic_total), np.median(dynamic_total), np.mean(dynamic_total), np.max(dynamic_total))
-    print(np.min(dynamic_partial), np.median(dynamic_partial),  np.mean(dynamic_partial), np.max(dynamic_partial))
+    '''Runtime investigation'''
+    # for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
+    #     if kk < 462:
+    #         continue
+    #     print(folder)
+    #     screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
+    #     info_path = screenshot_path.replace('shot.png', 'info.txt')
+    #     url = open(info_path, encoding='utf-8').read()
+    #     start_time = time.time()
+    #     _, _, successful, process_time = dynamic_analysis(url=url, screenshot_path=screenshot_path,
+    #                                                       cls_model=cls_model, ele_model=ele_model,
+    #                                                       login_model=login_model,
+    #                                                       driver=driver)
+    #     total_time = time.time() - start_time
+    #     if folder not in open('./datasets/460_legitimate_runtime.txt').read():
+    #         with open('./datasets/460_legitimate_runtime.txt', 'a+') as f:
+    #             f.write(folder+'\t'+str(process_time)+'\t'+str(total_time)+'\n')
+    #
+    # dynamic_total = [float(x.split('\t')[-1]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
+    #     [float(x.split('\t')[-1]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
+    # dynamic_partial = [float(x.split('\t')[-2]) for x in open('./datasets/460_legitimate_runtime.txt').readlines()] + \
+    #     [float(x.split('\t')[-2]) for x in open('./datasets/600_legitimate_runtime.txt').readlines()]
+    # print(np.min(dynamic_total), np.median(dynamic_total), np.mean(dynamic_total), np.max(dynamic_total))
+    # print(np.min(dynamic_partial), np.median(dynamic_partial),  np.mean(dynamic_partial), np.max(dynamic_partial))
 
         # break
-    # for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
-    #
-    #     old_screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
-    #     old_html_path = old_screenshot_path.replace('shot.png', 'html.txt')
-    #     old_info_path = old_screenshot_path.replace('shot.png', 'info.txt')
-    #
-    #     # if not crawled properly
-    #     if not os.path.exists(old_info_path):
-    #         continue
-    #
-    #     orig_url = open(old_info_path, encoding='utf-8').read()
-    #     print(orig_url)
-    #     domain_name = orig_url.split('//')[-1]
-    #     # if domain_name in urldict.keys():
-    #     #     if len(urldict[domain_name]) > 0:
-    #     #         continue
-    #
-    #     start_time = time.time()
-    #     try:
-    #         driver.get(orig_url)
-    #         time.sleep(2)
-    #         click_popup()
-    #         alert_msg = driver.switch_to.alert.text
-    #         driver.switch_to.alert.dismiss()
-    #     except TimeoutException as e:
-    #         print(str(e))
-    #         clean_up_window(driver)  # clean up the windows
-    #         continue
-    #     except Exception as e:
-    #         print(str(e))
-    #         print("no alert")
-    #     print('Finish loading URL twice {:.4f}'.format(time.time() - start_time))
-    #
-    #     print("getting url")
-    #     start_time = time.time()
-    #     page_text = get_page_text(driver).split('\n')  # tokenize by space
-    #     print(page_text)
-    #     print('Num token in HTML: ', len(page_text))
-    #     print('Finish getting HTML text {:.4f}'.format(time.time() - start_time))
-    #
-    #     # debug screenshot
-    #     # driver.save_screenshot(os.path.join(debug_folder, folder+'.png'))
-    #
-    #     # FIXME: check CRP for original URL first
-    #     start_time = time.time()
-    #     top3_urls_html = keyword_heuristic_debug(driver=driver, orig_url=orig_url, page_text=page_text)
-    #     print('After HTML keyword finder:', top3_urls_html)
-    #     print('Finish HTML login finder {:.4f}'.format(time.time() - start_time))
-    #     print('After HTML finder', top3_urls_html)
-    #
-    #     clean_up_window(driver)
-    #     # go back to the original site
-    #     start_time = time.time()
-    #     try:
-    #         driver.get(orig_url)
-    #         time.sleep(2)
-    #         click_popup()
-    #         alert_msg = driver.switch_to.alert.text
-    #         driver.switch_to.alert.dismiss()
-    #     except TimeoutException as e:
-    #         print(str(e))
-    #         clean_up_window(driver)  # clean up the windows
-    #         continue
-    #     except Exception as e:
-    #         print(str(e))
-    #         print("no alert")
-    #     print('Finish loading original URL again {:.4f}'.format(time.time() - start_time))
-    #
-    #     start_time = time.time()
-    #     top3_urls_cv = cv_heuristic_debug(driver=driver, orig_url=orig_url, old_screenshot_path=old_screenshot_path)
-    #     print('After CV finder', top3_urls_cv)
-    #     print('Finish CV login finder {:.4f}'.format(time.time() - start_time))
-    #     print('After CV finder', top3_urls_cv)
-    #     urldict[domain_name] = []
-    #     urldict[domain_name].extend(top3_urls_html)
-    #     urldict[domain_name].extend(top3_urls_cv)
-    #
-    #     # write
-    #     with open('./datasets/600_legitimate_detectedURL_eager.json', 'wt', encoding='utf-8') as handle:
-    #         json.dump(urldict, handle)
-    #
-    #     clean_up_window(driver)
+
+    html_obfuscate = True
+    for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
+
+        old_screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
+        old_html_path = old_screenshot_path.replace('shot.png', 'html.txt')
+        old_info_path = old_screenshot_path.replace('shot.png', 'info.txt')
+
+        # if not crawled properly
+        if not os.path.exists(old_info_path): continue
+
+        # convert .txt to .html
+        if os.path.exists(old_html_path):
+            soup = rel2abs(old_html_path)
+            with open(os.path.join(old_html_path.replace('html.txt', '{}.html'.format(folder))), "w", encoding='utf-8') as f:
+                f.write(str(soup))
+            soup = Soup(open(old_html_path, encoding='iso-8859-1').read(), features="lxml")
+            soup = soup.prettify()
+            with open(os.path.join(old_html_path.replace('html.txt', '{}.html'.format(folder))), "w", encoding='utf-8') as f:
+                f.write(str(soup))
+            old_html_path = old_html_path.replace('html.txt', '{}.html'.format(folder))
+
+        # check whether have been visited before
+        orig_url = open(old_info_path, encoding='utf-8').read()
+        print('Current URL:', orig_url)
+        domain_name = orig_url.split('//')[-1]
+        if domain_name in urldict.keys():
+            if len(urldict[domain_name]) > 0:
+                continue
+
+        # initial visit
+        start_time = time.time()
+        try:
+            driver.get(orig_url)
+            # driver.get(os.path.join('file://', old_html_path))
+            time.sleep(2)
+            # click_popup()
+            alert_msg = driver.switch_to.alert.text
+            driver.switch_to.alert.dismiss()
+        except TimeoutException as e:
+            print(str(e))
+            clean_up_window(driver)  # clean up the windows
+            continue
+        except Exception as e:
+            print(str(e))
+            print("no alert")
+        print('Finish loading URL twice {:.4f}'.format(time.time() - start_time))
+
+        print("getting url")
+        start_time = time.time()
+        page_text = get_page_text(driver).split('\n')  # tokenize by space
+        print('Finish getting HTML text {:.4f}'.format(time.time() - start_time))
+
+        # HTML heuristic first FIXME: check CRP for original URL first
+        start_time = time.time()
+        top3_urls_html = keyword_heuristic_debug(driver=driver, orig_url=orig_url, page_text=page_text, obfuscate=html_obfuscate)
+        # top3_urls_html = keyword_heuristic_debug(driver=driver,
+        #                                          orig_url=os.path.join('file://', old_html_path),
+        #                                          page_text=page_text,
+        #                                          obfuscate=True)
+        print('After HTML keyword finder:', top3_urls_html); print('Finish HTML login finder {:.4f}'.format(time.time() - start_time))
+        clean_up_window(driver)
+
+        # go back to the original site to run CV model
+        start_time = time.time()
+        try:
+            driver.get(orig_url) # FIXME: still load the original URL instead
+            # driver.get(os.path.join('file://', old_html_path))
+            time.sleep(2)
+            # click_popup()
+            alert_msg = driver.switch_to.alert.text
+            driver.switch_to.alert.dismiss()
+        except TimeoutException as e:
+            print(str(e))
+            clean_up_window(driver)  # clean up the windows
+            continue
+        except Exception as e:
+            print(str(e))
+            print("no alert")
+        print('Finish loading original URL again {:.4f}'.format(time.time() - start_time))
+
+        # save new screenshot
+        driver.save_screenshot(os.path.join(legitimate_folder, folder, 'new.png'))
+        start_time = time.time()
+        top3_urls_cv = cv_heuristic_debug(driver=driver, orig_url=orig_url, old_screenshot_path=os.path.join(legitimate_folder, folder, 'new.png'))
+        # top3_urls_cv = cv_heuristic_debug(driver=driver, orig_url=os.path.join('file://', old_html_path),
+        #                                   old_screenshot_path=os.path.join(legitimate_folder, folder, 'new.png'))
+        print('After CV finder', top3_urls_cv); print('Finish CV login finder {:.4f}'.format(time.time() - start_time))
+
+        # append urls
+        urldict[domain_name] = []
+        for url in top3_urls_html:
+            if legitimate_folder in url:
+                url = ''.join(url.split(legitimate_folder +'/'+ folder+'/'+folder+'.html'))
+                if not url.startswith('http'):
+                    url = 'https://' + url
+            url = url.split('.html')[0]
+            urldict[domain_name].append(url)
+
+        for url in top3_urls_cv:
+            if legitimate_folder in url:
+                url = ''.join(url.split(legitimate_folder +'/'+ folder+'/'+folder+'.html'))
+                if not url.startswith('http'):
+                    url = 'https://' + url
+            url = url.split('.html')[0]
+            urldict[domain_name].append(url)
+
+        # write
+        # with open('./datasets/600_legitimate_detectedURL_eager.json', 'wt', encoding='utf-8') as handle:
+        #     json.dump(urldict, handle)
+        print(urldict)
+        with open('./datasets/600_legitimate_detectedURL_eager_obfuscate.json', 'wt', encoding='utf-8') as handle:
+            json.dump(urldict, handle)
+
+        clean_up_window(driver)
