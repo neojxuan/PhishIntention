@@ -3,7 +3,7 @@ import helium
 import time
 import requests
 from seleniumwire import webdriver
-
+import re
 
 def initialize_chrome_settings(lang_txt:str):
     '''
@@ -142,10 +142,13 @@ def click_popup():
                     "OK", "AGREE", "close", "Close", "accept", "Accept all",
                     "I agree", "I AGREE", "Allow everyone", "Enter Now", "Confirm selection"]
 
+    body = get_page_text(helium.get_driver())
+
     for button_text in keyword_list:
-        success = click_button(button_text=button_text)
-        if success:
-            return
+        if re.search(button_text, body, flags=re.I):
+            success = click_button(button_text=button_text)
+            if success:
+                return
 
 
 def click_text(text):
@@ -156,12 +159,14 @@ def click_text(text):
     '''
     helium.Config.implicit_wait_secs = 2 # this is the implicit timeout for helium
     helium.get_driver().implicitly_wait(2) # this is the implicit timeout for selenium
+    body = get_page_text(helium.get_driver())
     try:
         # helium.highlight(text) # highlight text for debugging
         # time.sleep(1)
-        helium.click(text)
-        time.sleep(2) # wait until website is completely loaded
-        # click_popup()
+        if re.search(text, body, flags=re.I):
+            helium.click(text)
+            time.sleep(2) # wait until website is completely loaded
+            click_popup()
     except TimeoutException as e:
         print(e)
     except LookupError as e:

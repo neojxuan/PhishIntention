@@ -49,9 +49,14 @@ def temporal_driver(lang_txt:str):
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36')
     options.set_capability('unhandledPromptBehavior', 'dismiss') # dismiss
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
     options.add_argument("disable-notifications")
-    options.add_argument("disable-gpu")
+    options.add_experimental_option("prefs", {
+        "download.default_directory": r"D:\Users\ruofan\Downloads",
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "safebrowsing.enabled": True
+    })
+
 
     return options
 
@@ -179,9 +184,10 @@ def rel2abs(html_path):
         head = soup.find('head')
         if head is not None:
             head = next(head.children, None)
-            base = soup.new_tag('base')
-            base['href'] = os.path.basename(html_path).split('.html')[0]
-            head.insert_before(base)
+            if head is not None:
+                base = soup.new_tag('base')
+                base['href'] = os.path.basename(html_path).split('.html')[0]
+                head.insert_before(base)
     return soup.prettify()
 
 if __name__ == '__main__':
@@ -257,6 +263,8 @@ if __name__ == '__main__':
     html_obfuscate = True
     for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
 
+        if kk<=121: continue
+
         old_screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
         old_html_path = old_screenshot_path.replace('shot.png', 'html.txt')
         old_info_path = old_screenshot_path.replace('shot.png', 'info.txt')
@@ -289,7 +297,7 @@ if __name__ == '__main__':
             driver.get(orig_url)
             # driver.get(os.path.join('file://', old_html_path))
             time.sleep(2)
-            # click_popup()
+            click_popup()
             alert_msg = driver.switch_to.alert.text
             driver.switch_to.alert.dismiss()
         except TimeoutException as e:
