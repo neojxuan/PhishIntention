@@ -50,11 +50,12 @@ src
                 |__ bit.pth.tar
     |___ util/: other scripts (chromedriver utilities)
     
-    |___ detectron2_pedia/: training script for logo detector (for Phishpedia not PhishIntention)
+    |___ logo_detector_pedia/: training script for logo detector (for Phishpedia not PhishIntention)
     |___ siamese_pedia/: inference script for siamese (for Phishpedia not PhishIntention)
         |__ domain_map.pkl
         |__ expand_targetlist/
     |___ adv_attack/: adversarial attacking scripts
+    |___ layout_matcher/: deprecated scripts
     
     |___ element_detector.py: inference script for abstract layout detector
     |___ credential.py: inference script for CRP classifier
@@ -92,41 +93,32 @@ unzip expand_targetlist.zip -d expand_targetlist
 
 ### 2. Download all the model files, if you are Windows user you can skip, Linux user please do this step:
 - Download all model files [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing) and put them in the locations shown as project directory tree.
-
-<!-- - (Optional, if you want to run Phishpedia) Download [Object detector weights for Phishpedia](https://drive.google.com/file/d/1tE2Mu5WC8uqCxei3XqAd7AWaP5JTmVWH/view?usp=sharing),
-put it under **src/detectron2_pedia/output/rcnn_2/** -->
 - Make sure your directory tree looks like above
 
 
-### 3. Download all data files
+### 3. Download all data files in the paper(Skip if you want to test your own data)
 - Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), out of which 4093 are non-credential-requiring phishing, see this [list](https://drive.google.com/file/d/1UVoK-Af3j4ixYy2_jEzG9ZBbYpRkuKFK/view?usp=sharing), shall filter them out when running experiment
 - Download [Benign 25k](https://drive.google.com/file/d/1ymkGrDT8LpTmohOOOnA2yjhEny1XYenj/view?usp=sharing) dataset,
 unzip and move them to **datasets/**
+- Download [Mislead 3k](https://drive.google.com/file/d/1xmB_P6I9BwnNYGJb7yeN-o2A1fMlX3Oh/view?usp=sharing), unzip and move them to **datasets/**
 
 ### 4. Run experiment on dataset in paper (Skip if you want to test on your own dataset)
-- For general experiment on Phish 25K nonCRP and Benign 25K:
+- For general experiment on Phish25K nonCRP, Benign25K, Mislead3K:
 please run evaluation scripts
 ```bash
 python -m src.pipeline_eval --data-dir [data folder] \
-                            --mode [phish|benign] \
+                            --mode [phish|benign] \ # set to phish if you are testing on Phish25K, set to benign if you ware testing on Benign25K or Mislead3K
                             --write-txt output.txt \
-                            --exp intention \ # evaluate Phishpedia or PHIND
+                            --exp intention \ # evaluate Phishpedia or PhishIntention
                             --ts 0.83
 ```
 
 ### 5. Run experiment on customized dataset
-- The data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites):
+- The data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites) (i.e. there should be an info.txt storing the url, html.txt storing the HTML code, and shot.png storing screenshot):
 
 ```bash
-python phishintention_main.py --folder [data folder] \
-                              --results output_discover.txt
+python phishintention_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
 ```
-
-<!-- If you want to run Phishpedia instead
-```
-python phishpedia_main.py --folder [data folder] \
-                          --results [output_file.txt]
-``` -->
 
 <!-- ## Telegram service to label found phishing (Optional)
 ### Introduction
