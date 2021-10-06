@@ -263,7 +263,7 @@ if __name__ == '__main__':
     html_obfuscate = True
     for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
 
-        if kk<=121: continue
+        if kk<=183: continue
 
         old_screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
         old_html_path = old_screenshot_path.replace('shot.png', 'html.txt')
@@ -297,7 +297,7 @@ if __name__ == '__main__':
             driver.get(orig_url)
             # driver.get(os.path.join('file://', old_html_path))
             time.sleep(2)
-            click_popup()
+            # click_popup()
             alert_msg = driver.switch_to.alert.text
             driver.switch_to.alert.dismiss()
         except TimeoutException as e:

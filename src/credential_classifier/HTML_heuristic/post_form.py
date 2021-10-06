@@ -51,7 +51,7 @@ def read_html(html_path):
 
     return tree_list
 
-def proc_tree(tree):
+def proc_tree(tree, obfuscate=False):
     '''
     returns number of forms, type of forms in a list, number of inputs in each form, number of password field in each form
     :param tree: Element html object
@@ -63,6 +63,16 @@ def proc_tree(tree):
     if len(forms) == 0 : # no form
         return 0, [], [], [], []
     else:
+        if obfuscate:
+            for form in forms:
+                inputs = form.xpath('.//input')
+                for input in inputs:
+                    try:
+                        if input.get('type') == "password":
+                            input.attrib['type'] = "passw0rd"
+                    except:
+                        pass
+
         methods  = []
         count_inputs = []
         count_password = []
@@ -122,7 +132,7 @@ def check_post(x, version=1):
 
 if __name__ == '__main__':
     tree_list = read_html('D:/ruofan/PhishIntention/datasets/PhishDiscovery/PhishIntention_FP/santanderresearch.com/html.txt')
-    results = proc_tree(tree_list)
+    results = proc_tree(tree_list, obfuscate=True)
     label = check_post(results, 2)
     print(label)
 

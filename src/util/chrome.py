@@ -143,7 +143,6 @@ def click_popup():
                     "I agree", "I AGREE", "Allow everyone", "Enter Now", "Confirm selection"]
 
     body = get_page_text(helium.get_driver())
-
     for button_text in keyword_list:
         if re.search(button_text, body, flags=re.I):
             success = click_button(button_text=button_text)
