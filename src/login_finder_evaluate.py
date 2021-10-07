@@ -159,6 +159,7 @@ def cv_heuristic_debug(driver, orig_url, old_screenshot_path):
         except TimeoutException as e:
             pass
 
+
         try:
             driver.get(orig_url)
             time.sleep(2)
@@ -226,10 +227,10 @@ if __name__ == '__main__':
         model_type='mixed')
 
     # 600 URLs
-    legitimate_folder = 'D:/ruofan/xdriver3-open/1003_legitimate_loginbutton_labelled/600_legitimate'
+    legitimate_folder = 'D:/ruofan/xdriver3-open/1003_legitimate_loginbutton_labelled/460_legitimate'
     urldict = {}
-    if os.path.exists('./datasets/600_legitimate_detectedURL_eager_obfuscate.json'):
-        with open('./datasets/600_legitimate_detectedURL_eager_obfuscate.json', 'rt', encoding='utf-8') as handle:
+    if os.path.exists('./datasets/460_legitimate_detectedURL_eager_obfuscate.json'):
+        with open('./datasets/460_legitimate_detectedURL_eager_obfuscate.json', 'rt', encoding='utf-8') as handle:
             urldict = json.load(handle)
     print(urldict)
 
@@ -263,7 +264,11 @@ if __name__ == '__main__':
     html_obfuscate = True
     for kk, folder in tqdm(enumerate(os.listdir(legitimate_folder))):
 
-        if kk<=183: continue
+        # if kk<=434: continue
+
+        #### TODO: remote this, this is only for single url testing
+        if folder != 'mediamarkt.de': continue
+        #########
 
         old_screenshot_path = os.path.join(legitimate_folder, folder, 'shot.png')
         old_html_path = old_screenshot_path.replace('shot.png', 'html.txt')
@@ -287,9 +292,10 @@ if __name__ == '__main__':
         orig_url = open(old_info_path, encoding='utf-8').read()
         print('Current URL:', orig_url)
         domain_name = orig_url.split('//')[-1]
-        if domain_name in urldict.keys():
-            if len(urldict[domain_name]) > 0:
-                continue
+        # if domain_name in urldict.keys():
+        #     if len(urldict[domain_name]) > 0:
+        #         continue
+
 
         # initial visit
         start_time = time.time()
@@ -371,8 +377,10 @@ if __name__ == '__main__':
         # write
         # with open('./datasets/600_legitimate_detectedURL_eager.json', 'wt', encoding='utf-8') as handle:
         #     json.dump(urldict, handle)
-        print(urldict)
-        with open('./datasets/600_legitimate_detectedURL_eager_obfuscate.json', 'wt', encoding='utf-8') as handle:
-            json.dump(urldict, handle)
+        # print(urldict)
+        # with open('./datasets/460_legitimate_detectedURL_eager_obfuscate.json', 'wt', encoding='utf-8') as handle:
+        #     json.dump(urldict, handle)
 
         clean_up_window(driver)
+        driver.quit()
+        exit()

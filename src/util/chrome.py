@@ -138,9 +138,9 @@ def click_popup():
     '''
     helium.Config.implicit_wait_secs = 2 # this is the implicit timeout for helium
     helium.get_driver().implicitly_wait(2)
-    keyword_list = ["Accept", "Accept all cookies", "Accept and continue", "Continue", "I accept",
+    keyword_list = ["Allow all cookies", "Accept Cookies", "Accept", "Accept all cookies", "Accept and continue", "Continue", "I accept",
                     "OK", "AGREE", "close", "Close", "accept", "Accept all",
-                    "I agree", "I AGREE", "Allow everyone", "Enter Now", "Confirm selection"]
+                    "I agree", "I AGREE", "Allow everyone", "Enter Now", "Confirm selection", "I understand"]
 
     body = get_page_text(helium.get_driver())
     for button_text in keyword_list:
