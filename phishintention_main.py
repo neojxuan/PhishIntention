@@ -47,7 +47,7 @@ def main(url, screenshot_path):
         phish_category = 0
         pred_target = None
         siamese_conf = None
-        print("Entering phishpedia")
+        print("Entering phishintention")
 
         ####################### Step1: layout detector ##############################################
         start_time = time.time()

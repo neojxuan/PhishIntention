@@ -142,7 +142,7 @@ if __name__ == "__main__":
 
     # os.environ["CUDA_VISIBLE_DEVICES"]="1"
     parser = argparse.ArgumentParser()
-    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/test_sites')
-    parser.add_argument('-r', "--results", help='Input results file name', default='./test_pedia.txt')
+    parser.add_argument('-f', "--folder", help='Input folder path to parse',  default='./datasets/outlook_debug_sites')
+    parser.add_argument('-r', "--results", help='Input results file name', default='./outlook_debug.txt')
     args = parser.parse_args()
     runit_pedia(args.folder, args.results)
