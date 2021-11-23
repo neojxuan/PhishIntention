@@ -63,11 +63,9 @@ def vis(img_path, pred_boxes):
     # draw rectangle
     for j, box in enumerate(pred_boxes):
         if j == 0: # Top1 red
-            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 0, 0), 2)
-        elif j == 1: # Top2 orange
-            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 128, 0), 2)
-        elif j == 2: # Top3 yellow
-            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255, 255, 0), 2)
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (0, 0, 255), 2)
+        elif j == 1: # Top3 blue
+            cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (255,165,0), 2)
         else: # green
             cv2.rectangle(check, (int(box[0]), int(box[1])), (int(box[2]), int(box[3])), (36, 255, 12), 2)
 
