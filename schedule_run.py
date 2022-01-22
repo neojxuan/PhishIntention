@@ -13,7 +13,7 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 if __name__ == '__main__':
 
     while True:
-        # date = '2021-11-13'
+        # date = '2021-12-22'
         date = datetime.today().strftime('%Y-%m-%d')
         print('Today is:', date)
         parser = argparse.ArgumentParser()

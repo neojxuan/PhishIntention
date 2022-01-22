@@ -296,7 +296,6 @@ if __name__ == '__main__':
         #     if len(urldict[domain_name]) > 0:
         #         continue
 
-
         # initial visit
         start_time = time.time()
         try:
