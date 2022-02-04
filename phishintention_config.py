@@ -1,9 +1,9 @@
 # Global configuration
-from src.siamese import *
-from src.element_detector import *
-from src.credential import *
+from src.OCR_aided_siamese import *
+from src.AWL_detector import *
+from src.crp_classifier import *
 from src.util.chrome import *
-from src.login_finder import *
+from src.crp_locator import *
 import helium
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager

@@ -4,7 +4,7 @@ from .layout_matcher.heuristic import layout_heuristic
 
 import os
 import cv2
-from src.element_detector import element_recognition
+from src.AWL_detector import element_recognition
 import torch
 import numpy as np
 

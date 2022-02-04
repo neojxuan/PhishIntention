@@ -11,22 +11,10 @@ import time
 from PIL import Image, ImageFile
 
 import torch
-from torch import nn, optim
 from torch.backends import cudnn
-from torch.utils.data import DataLoader
 from torchvision import transforms
 
-# from config import get_args
-# from lib import datasets, evaluation_metrics, models
 from .lib.models.model_builder import ModelBuilder
-# from .lib.datasets.dataset import LmdbDataset, AlignCollate
-# from .lib.loss import SequenceCrossEntropyLoss
-# from .lib.trainers import Trainer
-# from .lib.evaluators import Evaluator
-# from .lib.utils.logging import Logger, TFLogger
-from .lib.utils.serialization import load_checkpoint, save_checkpoint
-# from .lib.utils.osutils import make_symlink_if_not_exists
-# from .lib.evaluation_metrics.metrics import get_str_list
 from .lib.utils.labelmaps import get_vocabulary, labels2strs
 
 

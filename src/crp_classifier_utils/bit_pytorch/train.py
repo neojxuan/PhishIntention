@@ -9,14 +9,14 @@ import torchvision as tv
 # from torchsummary import summary
 
 import os
-import src.credential_classifier.bit_pytorch.models as models
+import src.crp_classifier_utils.bit_pytorch.models as models
 
-from src.credential_classifier import bit_common
-from src.credential_classifier import bit_hyperrule
+from src.crp_classifier_utils import bit_common
+from src.crp_classifier_utils import bit_hyperrule
 
-from src.credential_classifier.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
+from src.crp_classifier_utils.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
 # from torch.utils.tensorboard import SummaryWriter
-import src.credential_classifier.bit_pytorch.fewshot as fs
+import src.crp_classifier_utils.bit_pytorch.fewshot as fs
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="1,0"
 

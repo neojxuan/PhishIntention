@@ -1,8 +1,8 @@
 
 import torch
 import numpy as np
-import src.credential_classifier.bit_pytorch.models as models
-from src.credential_classifier.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
+import src.crp_classifier_utils.bit_pytorch.models as models
+from src.crp_classifier_utils.bit_pytorch.dataloader import LayoutLoader, ScreenshotLoader, HybridLoader
 import os
 import matplotlib.pyplot as plt
 from collections import OrderedDict

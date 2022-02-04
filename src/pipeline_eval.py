@@ -4,10 +4,10 @@ import os
 
 from tqdm import tqdm
 import time
-from src.siamese import *
-from src.element_detector import *
-from src.credential import *
-from src.logo_detector_pedia.inference import *
+from src.OCR_aided_siamese import *
+from src.AWL_detector import *
+from src.crp_classifier import *
+from src.phishpedia_logo_detector.inference import *
 import argparse
 import errno
 # import torch.multiprocessing as mp

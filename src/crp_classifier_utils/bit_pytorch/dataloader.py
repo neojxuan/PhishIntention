@@ -1,7 +1,7 @@
 import torch.utils.data as data
 import numpy as np
-from src.credential_classifier.bit_pytorch.grid_divider import read_img, coord2pixel, topo2pixel
-from src.credential_classifier.bit_pytorch.utils import read_txt, read_txt_screenshot
+from src.crp_classifier_utils.bit_pytorch.grid_divider import read_img, coord2pixel, topo2pixel
+from src.crp_classifier_utils.bit_pytorch.utils import read_txt, read_txt_screenshot
 from src.layout_matcher.layout_matcher.topology import knn_matrix
 from src.layout_matcher.layout_matcher.misc import preprocess
 import torchvision.transforms as transform

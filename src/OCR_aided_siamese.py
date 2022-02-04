@@ -1,8 +1,8 @@
-from .siamese_pedia.siamese_retrain.bit_pytorch.models import KNOWN_MODELS
-from .siamese_pedia.inference import siamese_inference, pred_siamese
-from .siamese_pedia.utils import brand_converter
-from .siamese_OCR.inference import siamese_inference_OCR, pred_siamese_OCR
-from .siamese_OCR.demo import ocr_model_config
+from .phishpedia_siamese.siamese_retrain.bit_pytorch.models import KNOWN_MODELS
+from .phishpedia_siamese.inference import siamese_inference, pred_siamese
+from .phishpedia_siamese.utils import brand_converter
+from .OCR_siamese_utils.inference import siamese_inference_OCR, pred_siamese_OCR
+from .OCR_siamese_utils.demo import ocr_model_config
 import torch
 import os
 import numpy as np

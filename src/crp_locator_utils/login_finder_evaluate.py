@@ -5,11 +5,11 @@ import time
 from tqdm import tqdm
 from selenium.common.exceptions import TimeoutException, NoAlertPresentException
 import json
-from src.login_finder import login_config, login_recognition, dynamic_analysis
-from src.element_detector import vis
+from src.crp_locator import login_config, login_recognition, dynamic_analysis
+from src.AWL_detector import vis
 import cv2
-from src.element_detector import element_config
-from src.credential import credential_config
+from src.AWL_detector import element_config
+from src.crp_classifier import credential_config
 import numpy as np
 from bs4 import BeautifulSoup as Soup
 

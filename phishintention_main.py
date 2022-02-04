@@ -1,7 +1,7 @@
 from phishintention_config import *
 import os
 import argparse
-from src.element_detector import vis
+from src.AWL_detector import vis
 import time
 # import os
 os.environ["KMP_DUPLICATE_LIB_OK"]="TRUE"

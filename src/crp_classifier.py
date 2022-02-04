@@ -1,6 +1,6 @@
-from .credential_classifier.bit_pytorch.models import KNOWN_MODELS
-from .credential_classifier.bit_pytorch.grid_divider import read_img_reverse, coord2pixel_reverse, topo2pixel
-from .credential_classifier.HTML_heuristic.post_form import *
+from .crp_classifier_utils.bit_pytorch.models import KNOWN_MODELS
+from .crp_classifier_utils.bit_pytorch.grid_divider import read_img_reverse, coord2pixel_reverse, topo2pixel
+from .crp_classifier_utils.HTML_heuristic.post_form import *
 
 import torch
 import torch.nn.functional as F

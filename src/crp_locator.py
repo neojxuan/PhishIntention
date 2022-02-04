@@ -5,8 +5,8 @@ import numpy as np
 import os
 from src.util.chrome import *
 import re
-from src.credential import *
-from src.element_detector import *
+from src.crp_classifier import *
+from src.AWL_detector import *
 import time
 import pandas as pd
 from tqdm import tqdm
