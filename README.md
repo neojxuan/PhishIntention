@@ -1,7 +1,12 @@
 # PhishIntention
 
 ## PhishIntention
-- This is the official implementation of "Extracting Static and Dynamic Webpage Intentionfor Detecting and Explaining Phishing Attacks"
+- This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision Based Approach"USENIX'22 [link to paper](), [link to our website](https://sites.google.com/view/phishintention/home)
+- The contributions of our paper:
+   - [x] We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, is the first work which analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
+   - [x] We address various technical challenges in detecting the intentions by orchestrating multiple deep learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attack.
+   - [x] We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
+   - [x] We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to the state-of-the-art phishing detection solutions.
     
 ## Framework
     
