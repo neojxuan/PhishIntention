@@ -214,17 +214,18 @@ if __name__ == '__main__':
     driver.implicitly_wait(30)
     helium.set_driver(driver)
     ##################################################################################################################################################################
-    # login detector model
-    login_cfg, login_model = login_config(rcnn_weights_path='./src/dynamic/login_finder/output/lr0.001_finetune/model_final.pth',
-                                          rcnn_cfg_path='./src/dynamic/login_finder/configs/faster_rcnn_login_lr0.001_finetune.yaml')
     # element recognition model
     ele_cfg, ele_model = element_config(
-        rcnn_weights_path='./src/element_detector/output/website_lr0.001/model_final.pth',
-        rcnn_cfg_path='./src/element_detector/configs/faster_rcnn_web.yaml')
-    # CRP classifier -- mixed version
+        rcnn_weights_path='./src/AWL_detector_utils/output/website_lr0.001/model_final.pth',
+        rcnn_cfg_path='./src/AWL_detector_utils/configs/faster_rcnn_web.yaml')
+
     cls_model = credential_config(
-        checkpoint='./src/credential_classifier/output/Increase_resolution_lr0.005/BiT-M-R50x1V2_0.005.pth.tar',
+        checkpoint='./src/crp_classifier_utils/output/Increase_resolution_lr0.005/BiT-M-R50x1V2_0.005.pth.tar',
         model_type='mixed')
+
+    login_cfg, login_model = login_config(
+        rcnn_weights_path='./src/crp_locator_utils/login_finder/output/lr0.001_finetune/model_final.pth',
+        rcnn_cfg_path='./src/crp_locator_utils/login_finder/configs/faster_rcnn_login_lr0.001_finetune.yaml')
 
     # 600 URLs
     legitimate_folder = 'D:/ruofan/xdriver3-open/1003_legitimate_loginbutton_labelled/460_legitimate'
