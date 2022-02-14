@@ -240,8 +240,11 @@ if __name__ == '__main__':
     plt.show()
 
     # only get input fields
-    pred_inputs, _ = find_element_type(pred_boxes, pred_classes, bbox_type='input')
+    pred_inputs, _ = find_element_type(pred_boxes, pred_classes, bbox_type='input') # input boxes
+    pred_buttons, _ = find_element_type(pred_boxes, pred_classes, bbox_type='button') # button boxes
+
     print(pred_inputs)
+    print(pred_buttons)
 
     # next you can click on to the coordinates by calling click_point(x, y), where x = (x_min + x_max)/2, y = (y_min + y_max)/2 i.e. center of the box
 
