@@ -233,6 +233,7 @@ if __name__ == '__main__':
     # Detect input fields
     # predict elements
     pred_classes, pred_boxes, pred_scores = element_recognition(img=os.path.join(path_to_sreenshot, 'shot.png'), model=ele_model)
+
     # visualize elements
     check = vis(os.path.join(path_to_sreenshot, 'shot.png'), pred_boxes, pred_classes)
     plt.imshow(check)
@@ -241,6 +242,9 @@ if __name__ == '__main__':
     # only get input fields
     pred_inputs, _ = find_element_type(pred_boxes, pred_classes, bbox_type='input')
     print(pred_inputs)
+
+    # next you can click on to the coordinates by calling click_point(x, y), where x = (x_min + x_max)/2, y = (y_min + y_max)/2 i.e. center of the box
+
 
 
 
