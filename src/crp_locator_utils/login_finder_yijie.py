@@ -9,12 +9,20 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager
 import helium
 from tldextract import tldextract
+from src.AWL_detector import element_config, element_recognition, vis, find_element_type
+import matplotlib
+matplotlib.use('TkAgg')
+import matplotlib.pyplot as plt
 
 ##################################################################################################################################################################
 # login detector model
 login_cfg, login_model = login_config(
     rcnn_weights_path='./src/crp_locator_utils/login_finder/output/lr0.001_finetune/model_final.pth',
     rcnn_cfg_path='./src/crp_locator_utils/login_finder/configs/faster_rcnn_login_lr0.001_finetune.yaml')
+
+# element recognition model
+ele_cfg, ele_model = element_config(rcnn_weights_path = './src/AWL_detector_utils/output/website_lr0.001/model_final.pth',
+                                    rcnn_cfg_path='./src/AWL_detector_utils/configs/faster_rcnn_web.yaml')
 ##################################################################################################################################################################
 
 def temporal_driver(lang_txt:str):
@@ -63,7 +71,7 @@ def temporal_driver(lang_txt:str):
 
     return options
 
-def keyword_heuristic_debug(driver, orig_url, page_text, obfuscate=False):
+def keyword_heuristic_debug(driver, orig_url, page_text):
     '''
     Keyword based login finder
     :param driver: chrome driver
@@ -76,12 +84,6 @@ def keyword_heuristic_debug(driver, orig_url, page_text, obfuscate=False):
     '''
     ct = 0 # count number of sign-up/login links
     top3_urls = []
-
-    if obfuscate:
-        login_regex = re.compile(r"log in|login|log on|logon|signin|sign in|authenticat(e|ion)|(user|account|profile|dashboard)", re.I)
-        page_text = login_regex.sub("l0gin", str(page_text))
-        register_regex = re.compile(r"sign up|signup|regist(er|ration)|(create|new).*account", re.I)
-        page_text = register_regex.sub("new_acc0unt", str(page_text))
 
     for i in page_text:
         # looking for keyword
@@ -165,7 +167,6 @@ def cv_heuristic_debug(driver, orig_url, old_screenshot_path):
         try:
             driver.get(orig_url)
             time.sleep(2)
-            # click_popup()
             alert_msg = driver.switch_to.alert.text
             driver.switch_to.alert.dismiss()
         except TimeoutException as e:
@@ -180,7 +181,7 @@ def cv_heuristic_debug(driver, orig_url, old_screenshot_path):
 if __name__ == '__main__':
 
     # TODO: change the URL here
-    url = 'www.facebook.com'
+    url = 'https://www.facebook.com'
     screenshot_path = 'debug/'
 
     # load driver
@@ -228,6 +229,20 @@ if __name__ == '__main__':
     start_time = time.time()
     top3_urls_cv = cv_heuristic_debug(driver=driver, orig_url=url, old_screenshot_path=os.path.join(path_to_sreenshot, 'shot.png'))
     print('After CV finder', top3_urls_cv)
+
+    # Detect input fields
+    # predict elements
+    pred_classes, pred_boxes, pred_scores = element_recognition(img=os.path.join(path_to_sreenshot, 'shot.png'), model=ele_model)
+    # visualize elements
+    check = vis(os.path.join(path_to_sreenshot, 'shot.png'), pred_boxes, pred_classes)
+    plt.imshow(check)
+    plt.show()
+
+    # only get input fields
+    pred_inputs, _ = find_element_type(pred_boxes, pred_classes, bbox_type='input')
+    print(pred_inputs)
+
+
 
 
 

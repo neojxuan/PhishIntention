@@ -160,8 +160,8 @@ def click_text(text):
     helium.get_driver().implicitly_wait(2) # this is the implicit timeout for selenium
     body = get_page_text(helium.get_driver())
     try:
-        # helium.highlight(text) # highlight text for debugging
-        # time.sleep(1)
+        helium.highlight(text) # highlight text for debugging
+        time.sleep(1)
         if re.search(text, body, flags=re.I):
             helium.click(text)
             time.sleep(2) # wait until website is completely loaded
