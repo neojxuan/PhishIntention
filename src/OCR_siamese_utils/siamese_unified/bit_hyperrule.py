@@ -25,8 +25,6 @@ known_dataset_sizes = {
     'oxford_flowers102': (224, 224),
     'imagenet2012': (224, 224),
     # TODO: Specify image size of custom dataset here
-#     'logo_2k': (95, 95),
-#     'targetlist': (95, 95),
     'logo_2k': (224, 224),
     'targetlist': (224, 224),
 }

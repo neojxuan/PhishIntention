@@ -69,8 +69,3 @@ def find_fewshot_indices(dataset, n_shots):
   return all_indices
 
 
-if __name__ == "__main__":
-  dataset = tv.datasets.ImageFolder(sys.argv[2], preprocess)
-  all_indices = find_fewshot_indices(dataset, int(sys.argv[1]))
-  for i in all_indices:
-      print(i)

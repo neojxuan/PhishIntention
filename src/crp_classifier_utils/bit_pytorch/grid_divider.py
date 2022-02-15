@@ -238,16 +238,16 @@ def read_img(img_path, coords, types, num_types=5, grid_num=10):
     return torch.from_numpy(grid_arrs)
 
 
-if __name__ == '__main__':
-
-    num_imgs, labels, paths, preprocess_coordinates, types = read_txt('./data/first_round_3k3k/all_coords.txt')
-    check_path = paths[500]
-    preprocess_coordinates = np.asarray(preprocess_coordinates)[np.asarray(paths) == check_path]
-    types = np.asarray(types)[np.asarray(paths) == check_path]
-
-    grid_arr = read_img(img_path=os.path.join('./data/first_round_3k3k/credential', check_path+'.png'),
-              coords=preprocess_coordinates,
-              types=types)
-
-    print(grid_arr.shape)
+# if __name__ == '__main__':
+#
+#     num_imgs, labels, paths, preprocess_coordinates, types = read_txt('./data/first_round_3k3k/all_coords.txt')
+#     check_path = paths[500]
+#     preprocess_coordinates = np.asarray(preprocess_coordinates)[np.asarray(paths) == check_path]
+#     types = np.asarray(types)[np.asarray(paths) == check_path]
+#
+#     grid_arr = read_img(img_path=os.path.join('./data/first_round_3k3k/credential', check_path+'.png'),
+#               coords=preprocess_coordinates,
+#               types=types)
+#
+#     print(grid_arr.shape)
 

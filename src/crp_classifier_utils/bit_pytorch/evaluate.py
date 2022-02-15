@@ -62,7 +62,7 @@ def evaluate(model, train_loader):
     correct = 0
     total = 0
     with torch.no_grad():
-        for b, (x, y) in tqdm(enumerate(train_loader)):
+        for b, (x, y, _) in tqdm(enumerate(train_loader)):
             x = x.to(device, non_blocking=True, dtype=torch.float)
             y = y.to(device, non_blocking=True, dtype=torch.long)
 

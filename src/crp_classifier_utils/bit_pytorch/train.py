@@ -77,7 +77,7 @@ def run_eval(model, data_loader, device, logger, step):
 
     correct = 0
     total = 0
-    for b, (x, y) in enumerate(data_loader):
+    for b, (x, y, _) in enumerate(data_loader):
         with torch.no_grad():
             x = x.to(device, dtype=torch.float)
             y = y.to(device, dtype=torch.long)
@@ -146,7 +146,7 @@ def main(args):
 
     logger.info("Starting training!")
     
-    for x, y in recycle(train_loader):
+    for x, y, _ in recycle(train_loader):
 
         print('Batch input shape:', x.shape)
         print('Batch target shape:', y.shape)

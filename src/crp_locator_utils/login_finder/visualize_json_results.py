@@ -15,8 +15,8 @@ from detectron2.structures import Boxes, BoxMode, Instances
 from detectron2.utils.logger import setup_logger
 from detectron2.utils.visualizer import Visualizer
 
-import detectron2_1
-from detectron2_1.datasets import * # import dataset newly registered
+from src.crp_locator_utils.login_finder import detectron2_1
+from src.crp_locator_utils.login_finder.detectron2_1.datasets import * # import dataset newly registered
 
 
 def create_instances(predictions, image_size):

@@ -1,11 +1,10 @@
 
-from src.siamese_OCR.siamese_unified.bit_pytorch.train import run_eval, mktrainval
-import src.siamese_OCR.siamese_unified.bit_common as bit_common
+from src.OCR_siamese_utils.siamese_unified.bit_pytorch.train import run_eval, mktrainval
+import src.OCR_siamese_utils.siamese_unified.bit_common as bit_common
 import logging
-import src.siamese_OCR.siamese_unified.bit_pytorch.models as models
+import src.OCR_siamese_utils.siamese_unified.bit_pytorch.models as models
 import torch
 from os.path import join as pjoin
-
 
 
 if __name__ == '__main__':

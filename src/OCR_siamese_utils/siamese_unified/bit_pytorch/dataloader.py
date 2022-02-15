@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 import os
 import torch
-from demo import *
+from src.OCR_siamese_utils.demo import *
 
 
 class GetLoader(data.Dataset):

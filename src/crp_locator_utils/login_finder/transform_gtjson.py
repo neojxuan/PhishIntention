@@ -1,7 +1,7 @@
 
 from detectron2.config import get_cfg
 import detectron2.data.transforms as T
-from detectron2_1.datasets import *
+from src.crp_locator_utils.login_finder.detectron2_1.datasets import *
 from detectron2.data import build_detection_test_loader
 from tqdm import tqdm
 import json

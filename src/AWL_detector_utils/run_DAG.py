@@ -1,10 +1,10 @@
 import argparse
 
 from detectron2.config import get_cfg
-from detectron2_1.adv import DAGAttacker
+from src.AWL_detector_utils.detectron2_1.adv import DAGAttacker
 from detectron2 import model_zoo
-from detectron2_1.datasets import WebMapper
-from detectron2_1.register_backbone import * # import newly registered backbone
+from src.AWL_detector_utils.detectron2_1.datasets import WebMapper
+from src.AWL_detector_utils.detectron2_1.register_backbone import * # import newly registered backbone
 
 
 def main(args):

@@ -6,7 +6,7 @@ import numpy
 def construct_dict(
         filename: str,
         height: int,
-        weight: int,
+        width: int,
         image_id: int,
         gt_boxes: numpy.ndarray,
         gt_classes: numpy.ndarray,
@@ -20,7 +20,7 @@ def construct_dict(
         filename : str
             path to instance
         height: int
-        weight： int
+        width： int
         image_id: int
             unique identifier to instance
         gt_boxes: numpy.ndarray

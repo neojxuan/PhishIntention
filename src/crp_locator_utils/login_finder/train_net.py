@@ -33,7 +33,7 @@ from detectron2.engine import (
 from detectron2.evaluation import COCOEvaluator, verify_results
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
-from detectron2_1.datasets import LoginMapper
+from src.crp_locator_utils.login_finder.detectron2_1.datasets import LoginMapper
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0"
 

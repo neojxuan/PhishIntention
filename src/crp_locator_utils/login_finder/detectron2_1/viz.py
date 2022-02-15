@@ -28,7 +28,7 @@ from fvcore.common.file_io import PathManager
 from PIL import Image
 from tqdm import tqdm
 
-from detectron2_1.datasets import BenignMapper
+from src.crp_locator_utils.login_finder.detectron2_1.datasets import LoginMapper
 
 
 def viz_data(cfg) -> List[wandb.Image]:
@@ -46,7 +46,7 @@ def viz_data(cfg) -> List[wandb.Image]:
 
     # Grab train dataset and its metadata
     train_data_loader = build_detection_train_loader(
-        cfg, mapper=BenignMapper(cfg, is_train=True)
+        cfg, mapper=LoginMapper(cfg, is_train=True)
     )
     metadata = MetadataCatalog.get(cfg.DATASETS.TRAIN[0])
 

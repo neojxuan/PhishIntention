@@ -179,7 +179,7 @@ class ResNetV2Screenshot(nn.Module):
         for uname, unit in block.named_children():
           unit.load_from(weights, prefix=f'{prefix}{bname}/{uname}/')
 
-class ResNetV2Mixed(nn.Module):
+class ResNetV2Hybrid(nn.Module):
   """Implementation of Pre-activation (v2) ResNet mode.
      Mixed CRP classifier
   """
@@ -259,35 +259,10 @@ class Flatten(torch.nn.Module):
         return x.view(batch_size, -1)
 
 
+    
 class LayoutClassifier(nn.Module):
     def __init__(self, input_ch_size=9, grid_num=10, head_size=2):
         super(LayoutClassifier, self).__init__()
-        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
-        self.fc1 = nn.Linear(input_ch_size * (grid_num//2) * (grid_num//2), 32)
-        self.fc2 = nn.Linear(32, 16)
-        self.fc3 = nn.Linear(16, head_size)
-        self.grid_num = grid_num
-        self.input_ch_size = input_ch_size
-
-    def features(self, x):
-        x = self.pool(x)
-        x = x.view(-1, self.input_ch_size * (self.grid_num//2) * (self.grid_num//2))
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return x
-    
-    def forward(self, x):
-        x = self.pool(x)
-        x = x.view(-1, self.input_ch_size * (self.grid_num//2) * (self.grid_num//2))
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        x = self.fc3(x)
-        return x
-    
-    
-class LayoutClassifierV2(nn.Module):
-    def __init__(self, input_ch_size=9, grid_num=10, head_size=2):
-        super(LayoutClassifierV2, self).__init__()
         self.fc1 = nn.Linear(input_ch_size * grid_num * grid_num, 64)
         self.fc2 = nn.Linear(64, 32)
         self.fc3 = nn.Linear(32, 16)
@@ -324,9 +299,8 @@ KNOWN_MODELS = OrderedDict([
     ('BiT-S-R101x3', lambda *a, **kw: ResNetV2Screenshot([3, 4, 23, 3], 3, *a, **kw)),
     ('BiT-S-R152x2', lambda *a, **kw: ResNetV2Screenshot([3, 8, 36, 3], 2, *a, **kw)),
     ('BiT-S-R152x4', lambda *a, **kw: ResNetV2Screenshot([3, 8, 36, 3], 4, *a, **kw)),
-    ('BiT-M-R50x1V2', lambda *a, **kw: ResNetV2Mixed([3, 4, 6, 3], 1, *a, **kw)),
-    ('FCMax',  lambda *a, **kw: LayoutClassifier(*a, **kw)),
-    ('FCMaxV2',  lambda *a, **kw: LayoutClassifierV2(*a, **kw)),
+    ('BiT-M-R50x1V2', lambda *a, **kw: ResNetV2Hybrid([3, 4, 6, 3], 1, *a, **kw)),
+    ('FCMax', lambda *a, **kw: LayoutClassifier(*a, **kw)),
 ])
 
 if __name__ == '__main__':

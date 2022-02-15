@@ -123,22 +123,22 @@ if __name__ == '__main__':
     test_img_folder = './datasets/val_merge_imgs'
     test_all_folder = './datasets/val_merge_folder'
 
-    # train_set = HybridLoaderDebug(img_folder=train_img_folder,
+    # train_set = HybridLoader(img_folder=train_img_folder,
     #                       annot_path='./datasets/train_coords.txt')
-    # #
-    # val_set = HybridLoaderDebug(img_folder=test_img_folder,
+    # # #
+    # val_set = HybridLoader(img_folder=test_img_folder,
     #                       annot_path='./datasets/val_merge_coords.txt')
-
-    # train_set = ScreenshotLoaderDebug(img_folder=train_img_folder,
-    #                            annot_path='./datasets/train_coords.txt')
     #
-    # val_set = ScreenshotLoaderDebug(img_folder=test_img_folder,
+    # train_set = ScreenshotLoader(img_folder=train_img_folder,
+    #                            annot_path='./datasets/train_coords.txt')
+    # #
+    # val_set = ScreenshotLoader(img_folder=test_img_folder,
     #                          annot_path='./datasets/val_merge_coords.txt')
 
-    train_set = LayoutLoaderDebug(img_folder=train_img_folder,
+    train_set = LayoutLoader(img_folder=train_img_folder,
                                annot_path='./datasets/train_coords.txt')
 
-    val_set = LayoutLoaderDebug(img_folder=test_img_folder,
+    val_set = LayoutLoader(img_folder=test_img_folder,
                              annot_path='./datasets/val_merge_coords.txt')
 
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=1, drop_last=False, shuffle=False)

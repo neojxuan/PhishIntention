@@ -1,7 +1,7 @@
 
 from detectron2.config import get_cfg
 import detectron2.data.transforms as T
-from detectron2_1.datasets import *
+from src.AWL_detector_utils.detectron2_1.datasets import *
 from detectron2.data import build_detection_test_loader
 from tqdm import tqdm
 import json

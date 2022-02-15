@@ -33,8 +33,8 @@ from detectron2.engine import (
 from detectron2.evaluation import COCOEvaluator, verify_results
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
-from detectron2_1.datasets import WebMapper
-from detectron2_1.register_backbone import *
+from src.AWL_detector_utils.detectron2_1.datasets import WebMapper
+from src.AWL_detector_utils.detectron2_1.register_backbone import *
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="1"
 

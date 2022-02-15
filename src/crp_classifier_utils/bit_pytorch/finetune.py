@@ -25,13 +25,14 @@ import torchvision as tv
 from torchsummary import summary
 
 import os
-import bit_pytorch.models as models
+import src.crp_classifier_utils.bit_pytorch.models as models
 
-import bit_common
-import bit_hyperrule
+from src.crp_classifier_utils import bit_common
+from src.crp_classifier_utils import bit_hyperrule
 
-from bit_pytorch.dataloader import GetLoader, ImageLoader
+from src.crp_classifier_utils.bit_pytorch.dataloader import *
 from torch.utils.tensorboard import SummaryWriter
+import src.crp_classifier_utils.bit_pytorch.fewshot as fs
 import os
 os.environ["CUDA_VISIBLE_DEVICES"]="0, 1"
 
@@ -40,7 +41,6 @@ def recycle(iterable):
     while True:
         for i in iterable:
             yield i
-
 
 def mktrainval(args, logger):
 
@@ -51,10 +51,10 @@ def mktrainval(args, logger):
 #     val_set = ImageLoader(img_folder='../datasets/val_imgs',
 #                           annot_path='../datasets/val_coords.txt')
 
-    train_set = GetLoader(img_folder='../datasets/train_merge_imgs_grid2',
+    train_set = HybridLoader(img_folder='../datasets/train_merge_imgs_grid2',
                             annot_path='../datasets/train_merge_grid_coords2.txt')
 
-    val_set = GetLoader(img_folder='../datasets/val_merge_imgs',
+    val_set = HybridLoader(img_folder='../datasets/val_merge_imgs',
                          annot_path='../datasets/val_merge_coords.txt')
 
 
@@ -86,7 +86,7 @@ def run_eval(model, data_loader, device, logger, step):
 
     correct = 0
     total = 0
-    for b, (x, y) in enumerate(data_loader):
+    for b, (x, y, _) in enumerate(data_loader):
         with torch.no_grad():
             x = x.to(device, dtype=torch.float)
             y = y.to(device, dtype=torch.long)

@@ -13,11 +13,10 @@ from detectron2.data.datasets import register_coco_instances
 # Define dataset paths
 data_dir = Path("/home/l/liny/ruofan/PhishIntention/datasets")
 
-# train_data_dir = data_dir / "train_imgs"
-train_data_dir = data_dir / "train_imgs_nophish" #TODO: change back this dataset?
+train_data_dir = data_dir / "train_imgs"
 val_data_dir = data_dir / "val_imgs"
-# train_annot_file = data_dir / "train_coco.json"
-train_annot_file = data_dir / "train_coco_nophish.json"
+
+train_annot_file = data_dir / "train_coco.json"
 val_annot_file = data_dir / "val_coco.json"
 
 # Register benign train and test sets
