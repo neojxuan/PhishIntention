@@ -50,7 +50,7 @@ def vt_scan(url_test):
     :return: # positive engines, # total engines
     '''
     retry = 0
-    api_key = "f4529166d6daa0fe9f9ee8d9762ce20e6fb11edfac4fd5aa7598259b5e126bad"
+    api_key = "your api token"
     url = 'https://www.virustotal.com/vtapi/v2/url/report'
 
     params = {'apikey': api_key, 'resource': url_test, 'scan':1}
