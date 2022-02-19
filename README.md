@@ -48,7 +48,7 @@ src
             |__ output/
                 |__ lr0.001_finetune/
                     |__ model_final.pth
-    |___ OCR_siamese_utils/: scripts for logo matcher
+    |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
         |__ demo_downgrade.pth.tar
         |__ output/
             |__ targetlist_lr0.01/
@@ -63,10 +63,10 @@ src
     |___ adv_attack/: adversarial attacking scripts
     |___ layout_matcher/: deprecated scripts
     
-    |___ AWL_detector.py: inference script for abstract layout detector
+    |___ AWL_detector.py: inference script for AWL detector
     |___ crp_classifier.py: inference script for CRP classifier
-    |___ OCR_aided_siamese.py: inference script for siamese
-    |___ crp_locator.py: inference script for dynamic login finder
+    |___ OCR_aided_siamese.py: inference script for OCR-aided siamese
+    |___ crp_locator.py: inference script for CRP-Transition locator
     |___ pipeline_eval.py: evaluation script 
 
 phishintention_config.py: phish-discovery experiment config file for PhishIntention
@@ -146,6 +146,7 @@ folder = "[the folder you want to label]"
 [How do I find token for telebot?](https://core.telegram.org/bots#botfather)
 - 4. Go to **tele/**, Run **tele.py**
  -->
+ 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - We did not include the certstream code in this repo, our code is basically the same as [phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
