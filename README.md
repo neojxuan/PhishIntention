@@ -35,20 +35,20 @@
 ## Project structure
 ```
 src
-    |___ element_detector/: scripts for abstract layout detector 
+    |___ AWL_detector_utils/: scripts for abstract layout detector 
         |__ output/
             |__ website_lr0.001/
                 |__ model_final.pth
-    |___ credential_classifier/: scripts for CRP classifier
+    |___ crp_classifier_utils/: scripts for CRP classifier
             |__ output/
                 |__ Increase_resolution_lr0.005/
                     |__ BiT-M-R50x1V2_0.005.pth.tar
-    |___ dynamic/: scripts for CRP locator 
+    |___ crp_locator_utils/: scripts for CRP locator 
         |__ login_finder/
             |__ output/
                 |__ lr0.001_finetune/
                     |__ model_final.pth
-    |___ siamese_OCR/: scripts for logo matcher
+    |___ OCR_siamese_utils/: scripts for logo matcher
         |__ demo_downgrade.pth.tar
         |__ output/
             |__ targetlist_lr0.01/
@@ -59,13 +59,14 @@ src
     |___ siamese_pedia/: inference script for siamese (for Phishpedia not PhishIntention)
         |__ domain_map.pkl
         |__ expand_targetlist/
+        
     |___ adv_attack/: adversarial attacking scripts
     |___ layout_matcher/: deprecated scripts
     
-    |___ element_detector.py: inference script for abstract layout detector
-    |___ credential.py: inference script for CRP classifier
-    |___ siamese.py: inference script for siamese
-    |___ login_finder.py: inference script for dynamic login finder
+    |___ AWL_detector.py: inference script for abstract layout detector
+    |___ crp_classifier.py: inference script for CRP classifier
+    |___ OCR_aided_siamese.py: inference script for siamese
+    |___ crp_locator.py: inference script for dynamic login finder
     |___ pipeline_eval.py: evaluation script 
 
 phishintention_config.py: phish-discovery experiment config file for PhishIntention
