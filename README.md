@@ -120,7 +120,7 @@ python -m src.pipeline_eval --data-dir [data folder] \
 ```
 
 ### 5. Run experiment on customized dataset
-- The data folder should be organized in [this format](https://github.com/lindsey98/Phishpedia/tree/main/datasets/test_sites) (i.e. there should be an info.txt storing the url, html.txt storing the HTML code, and shot.png storing screenshot):
+- The data folder should be organized in [this format](https://github.com/lindsey98/PhishIntention/datasets/test_sites) (i.e. there should be an info.txt storing the url, html.txt storing the HTML code, and shot.png storing screenshot):
 
 ```bash
 python phishintention_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
