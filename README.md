@@ -55,8 +55,8 @@ src
                 |__ bit.pth.tar
     |___ util/: other scripts (chromedriver utilities)
     
-    |___ logo_detector_pedia/: training script for logo detector (for Phishpedia not PhishIntention)
-    |___ siamese_pedia/: inference script for siamese (for Phishpedia not PhishIntention)
+    |___ phishpedia_logo_detector/: training script for logo detector (for Phishpedia not PhishIntention)
+    |___ phishpedia_siamese/: inference script for siamese (for Phishpedia not PhishIntention)
         |__ domain_map.pkl
         |__ expand_targetlist/
         
@@ -92,7 +92,7 @@ pip install -r requirements.txt
 ## Instructions
 ### 1. Unzip targetlist
 ```bash
-cd src/siamese_pedia/
+cd src/phishpedia_siamese/
 unzip expand_targetlist.zip -d expand_targetlist
 ```
 - If unzip has some problem, try downloading the folder manually [here](https://drive.google.com/file/d/1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I/view?usp=sharing).
