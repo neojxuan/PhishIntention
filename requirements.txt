@@ -29,3 +29,4 @@ scikit-learn
 python-telegram-bot
 gspread
 oauth2client
+editdistance

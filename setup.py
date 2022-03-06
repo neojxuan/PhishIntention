@@ -58,7 +58,8 @@ setup(name='phishintention',
             'fvcore',
             'pycocotools',
             'scikit-learn',
-            'pyyaml'
+            'pyyaml',
+            'editdistance'
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
