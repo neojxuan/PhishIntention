@@ -21,8 +21,8 @@ from torch.utils import data
 from torch.utils.data import sampler
 from torchvision import transforms
 
-from lib.utils.labelmaps import get_vocabulary, labels2strs
-from lib.utils import to_numpy
+from phishintention.src.OCR_siamese_utils.lib.utils.labelmaps import get_vocabulary, labels2strs
+from phishintention.src.OCR_siamese_utils.lib.utils import to_numpy
 
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 

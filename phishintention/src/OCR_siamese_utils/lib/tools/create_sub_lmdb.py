@@ -1,7 +1,5 @@
 import lmdb
-import six
 import numpy as np
-from PIL import Image
 
 read_root_dir = '/data/zhui/back/NIPS2014'
 write_root_dir = '/home/mkyang/data/sub_nips2014'

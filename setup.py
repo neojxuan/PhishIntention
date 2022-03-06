@@ -43,7 +43,7 @@ setup(name='phishintention',
                 ],
       install_requires=[
             'torchsummary',
-            'scipy',
+            'scipy==1.1.0',
             'tldextract',
             'opencv-python',
             'selenium',
