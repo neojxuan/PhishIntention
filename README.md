@@ -52,7 +52,9 @@ In python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
 from phishintention.phishintention_config import load_config
+from phishintention.phishintention_main import element_recognition, phishpedia_classifier_OCR, credential_classifier_mixed_al, driver_loader, dynamic_analysis
 
+# use full model
 url = open("phishintention/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
 screenshot_path = "phishintention/datasets/test_sites/accounts.g.cdcde.com/shot.png"
 cfg_path = None # None means use default config.yaml
@@ -68,6 +70,36 @@ print('Where are the predicted bounding boxes (in [x_min, y_min, x_max, y_max])?
 plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
+
+# use AWL detector
+pred_classes, pred_boxes, pred_scores = element_recognition(img=screenshot_path, model=AWL_MODEL)
+print('Where are the predicted bounding boxes (in [x_min, y_min, x_max, y_max])?', pred_boxes)
+
+# use OCR Siamese
+pred_target, matched_coord, siamese_conf = phishpedia_classifier_OCR(pred_classes=pred_classes, pred_boxes=pred_boxes, 
+                                        domain_map_path=DOMAIN_MAP_PATH, model=SIAMESE_MODEL,
+                                        ocr_model = OCR_MODEL,
+                                        logo_feat_list=LOGO_FEATS, file_name_list=LOGO_FILES,
+                                        url=url, shot_path=screenshot_path,
+                                        ts=SIAMESE_THRE)
+print('Phishing (1) or Benign (0) ?', phish_category)
+print('What is its targeted brand if it is a phishing ?', pred_target)
+print('What is the siamese matching confidence ?', siamese_conf)
+
+# use CRP classifier
+cre_pred, cred_conf, _  = credential_classifier_mixed_al(img=screenshot_path, coords=pred_boxes,
+                                                         types=pred_classes, model=CRP_CLASSIFIER)
+print('CRP page (0) or non-CRP page (1) ?', cre_pred)
+
+# use CRP locator (url has to be alive)
+driver = driver_loader()
+print('Finish loading webdriver')
+url, screenshot_path, successful, process_time = dynamic_analysis(url=url, screenshot_path=screenshot_path,
+                                                cls_model=CRP_CLASSIFIER, ele_model=AWL_MODEL, 
+                                                login_model=CRP_LOCATOR_MODEL,
+                                                driver=driver)
+driver.quit()
+print('Did dynamic analysis find a CRP ?', successful)
 ```
 
 ## Use it as a repository
