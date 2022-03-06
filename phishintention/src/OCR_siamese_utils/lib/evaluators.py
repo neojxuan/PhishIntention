@@ -14,11 +14,11 @@ import sys
 from . import evaluation_metrics
 from .evaluation_metrics import Accuracy, EditDistance, RecPostProcess
 from .utils.meters import AverageMeter
-from .utils.visualization_utils import recognition_vis, stn_vis
+from .utils.visualization_utils import stn_vis
 
 metrics_factory = evaluation_metrics.factory()
 
-# from config import get_args
+# from .config import get_args
 # global_args = get_args(sys.argv[1:])
 
 class BaseEvaluator(object):

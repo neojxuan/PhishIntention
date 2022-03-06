@@ -49,7 +49,7 @@ def load_config(cfg_path: Union[str, None]):
 
         CRP_CLASSIFIER = credential_config(
             checkpoint=os.path.join(os.path.dirname(__file__), configs['CRP_CLASSIFIER']['WEIGHTS_PATH']),
-            model_type=os.path.join(os.path.dirname(__file__), configs['CRP_CLASSIFIER']['MODEL_TYPE']))
+            model_type=configs['CRP_CLASSIFIER']['MODEL_TYPE'])
 
         CRP_LOCATOR_CONFIG, CRP_LOCATOR_MODEL = login_config(
             rcnn_weights_path=os.path.join(os.path.dirname(__file__), configs['CRP_LOCATOR']['WEIGHTS_PATH']),
