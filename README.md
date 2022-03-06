@@ -32,121 +32,53 @@
     - If reach a CRP + Siamese report target: ```Return Phish, Phishing target``` 
     - Else ```Return Benign, None``` 
     
-## Project structure
-```
-src
-    |___ AWL_detector_utils/: scripts for abstract layout detector 
-        |__ output/
-            |__ website_lr0.001/
-                |__ model_final.pth
-    |___ crp_classifier_utils/: scripts for CRP classifier
-            |__ output/
-                |__ Increase_resolution_lr0.005/
-                    |__ BiT-M-R50x1V2_0.005.pth.tar
-    |___ crp_locator_utils/: scripts for CRP locator 
-        |__ login_finder/
-            |__ output/
-                |__ lr0.001_finetune/
-                    |__ model_final.pth
-    |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
-        |__ demo_downgrade.pth.tar
-        |__ output/
-            |__ targetlist_lr0.01/
-                |__ bit.pth.tar
-    |___ util/: other scripts (chromedriver utilities)
     
-    |___ phishpedia_logo_detector/: training script for logo detector (for Phishpedia not PhishIntention)
-    |___ phishpedia_siamese/: inference script for siamese (for Phishpedia not PhishIntention)
-        |__ domain_map.pkl
-        |__ expand_targetlist/
-        
-    |___ adv_attack/: adversarial attacking scripts
-    |___ layout_matcher/: deprecated scripts
-    
-    |___ AWL_detector.py: inference script for AWL detector
-    |___ crp_classifier.py: inference script for CRP classifier
-    |___ OCR_aided_siamese.py: inference script for OCR-aided siamese
-    |___ crp_locator.py: inference script for CRP-Transition locator
-    |___ pipeline_eval.py: evaluation script 
-
-phishintention_config.py: phish-discovery experiment config file for PhishIntention
-phishintention_main.py: phish-discovery experiment evaluation script for PhishIntention
-```
-
 ## Requirements
-Tested with Windows/Linux
+The following packages may need to install manually.
+- Windows/Linux/Mac machine 
+- python=3.7 
+- torch=1.6.0 # Make sure that the Pytorch is compatible with your CUDA version.
+- torchvision
+- Install compatible Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
 
-python=3.7 
 
-torch>=1.5.1 
+## Use it as a package
+First install the requirements, then run
+```
+ pip install git+https://github.com/lindsey98/PhishIntention.git
+```
+In python
+```python
+from phishintention.phishintention_main import test
+import matplotlib.pyplot as plt
+from phishpedia.phishpedia_config import load_config
 
-torchvision>=0.6.0
+url = open("phishpedia/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
+screenshot_path = "phishpedia/datasets/test_sites/accounts.g.cdcde.com/shot.png"
+cfg_path = None # None means use default config.yaml
+ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(cfg_path)
 
-Install Detectron2 manually, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). Windows please follow this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
+phish_category, pred_target, plotvis, siamese_conf, pred_boxes = test(url, screenshot_path,
+                                                                      ELE_MODEL, SIAMESE_THRE, SIAMESE_MODEL, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH)
 
-Then Run
+print('Phishing (1) or Benign (0) ?', phish_category)
+print('What is its targeted brand if it is a phishing ?', pred_target)
+print('What is the siamese matching confidence ?', siamese_conf)
+print('Where is the predicted logo (in [x_min, y_min, x_max, y_max])?', pred_boxes)
+plt.imshow(plotvis[:, :, ::-1])
+plt.title("Predicted screenshot with annotations")
+plt.show()
+```
+
+## Use it as a repository
+First install the requirements
+Then, run
 ```
 pip install -r requirements.txt
 ```
-
-## Instructions
-### 1. Unzip targetlist
-```bash
-cd src/phishpedia_siamese/
-unzip expand_targetlist.zip -d expand_targetlist
-```
-- If unzip has some problem, try downloading the folder manually [here](https://drive.google.com/file/d/1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I/view?usp=sharing).
-
-### 2. Download all the model files, if you are Windows user you can skip, Linux user please do this step:
-- Download all model files [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing) and put them in the locations shown as project directory tree.
-- Make sure your directory tree looks like above
+Please see detailed instructions in [phishintention/README.md](phishintention/README.md)
 
 
-### 3. Download all data files in the paper(Skip if you want to test your own data)
-- Download [Phish 30k](https://drive.google.com/file/d/12ypEMPRQ43zGRqHGut0Esq2z5en0DH4g/view?usp=sharing), out of which 4093 are non-credential-requiring phishing, see this [list](https://drive.google.com/file/d/1UVoK-Af3j4ixYy2_jEzG9ZBbYpRkuKFK/view?usp=sharing), shall filter them out when running experiment
-- Download [Benign 25k](https://drive.google.com/file/d/1ymkGrDT8LpTmohOOOnA2yjhEny1XYenj/view?usp=sharing) dataset,
-unzip and move them to **datasets/**
-- Download [Mislead 3k](https://drive.google.com/file/d/1xmB_P6I9BwnNYGJb7yeN-o2A1fMlX3Oh/view?usp=sharing), unzip and move them to **datasets/**
-
-### 4. Run experiment on dataset in paper (Skip if you want to test on your own dataset)
-- For general experiment on Phish25K nonCRP, Benign25K, Mislead3K:
-please run evaluation scripts
-```bash
-python -m src.pipeline_eval --data-dir [data folder] \
-                            --mode [phish|benign] \ # set to phish if you are testing on Phish25K, set to benign if you ware testing on Benign25K or Mislead3K
-                            --write-txt output.txt \
-                            --exp intention \ # evaluate Phishpedia or PhishIntention
-                            --ts 0.83
-```
-
-### 5. Run experiment on customized dataset
-- The data folder should be organized in [this format](https://github.com/lindsey98/PhishIntention/tree/main/datasets/test_sites/www.paypal.com) (i.e. there should be an info.txt storing the url, html.txt storing the HTML code, and shot.png storing screenshot):
-
-```bash
-python phishintention_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
-```
-
-<!-- ## Telegram service to label found phishing (Optional)
-### Introduction
-- When phishing are reported by the model, users may also want to manually verify the intention of the websites, thus we also developed a telegram-bot to help labeling the screenshot. An example is like this <img src="big_pic/tele.png"/>
-- In this application, we support the following command:
-```
-/start # this will return all the unlabelled data
-/get all/date # this will return the statistics for all the data namely how many positive and negatives there are
-/classify disagree # this will bring up phishing pages with any disagreement, ie one voted not phishing and one voted phishing for a revote
-```
-### Setup tele-bot
-- 1. Create an empty google sheet for saving the results (foldername, voting results etc.)
-- 2. Follow the [guide](https://www.analyticsvidhya.com/blog/2020/07/read-and-update-google-spreadsheets-with-python/) to download JSON file which stores the credential for that particular google sheet, save as **tele/cred.json**
-- 3. Go to **tele/tele.py**, Change 
-```
-token = '[token for telebot]' 
-folder = "[the folder you want to label]"
-```
-[How do I find token for telebot?](https://core.telegram.org/bots#botfather)
-- 4. Go to **tele/**, Run **tele.py**
- -->
- 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - We did not include the certstream code in this repo, our code is basically the same as [phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
