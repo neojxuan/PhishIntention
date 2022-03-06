@@ -103,7 +103,7 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
                 # load chromedriver
                 start_time = time.time()
                 url, screenshot_path, successful, process_time = dynamic_analysis(url=url, screenshot_path=screenshot_path,
-                                                                    cls_model=CRP_CLASSIFIER, ele_model=ele_model, login_model=CRP_LOCATOR_MODEL,
+                                                                    cls_model=CRP_CLASSIFIER, ele_model=AWL_MODEL, login_model=CRP_LOCATOR_MODEL,
                                                                     driver=driver)
                 dynamic_time = time.time() - start_time
                 driver.quit()
@@ -131,7 +131,9 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
                     (int(matched_coord[0] + 20), int(matched_coord[1] + 20)),
                     cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 0, 0), 2)
         
-    return phish_category, pred_target, plotvis, siamese_conf, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time)
+    return phish_category, pred_target, plotvis, siamese_conf, dynamic, \
+           str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time), \
+            pred_boxes, pred_classes
 
 def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH):
     date = folder.split('/')[-1]
@@ -167,7 +169,7 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
 
             else:
                 start_time = time.time()
-                phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown = test(url=url, screenshot_path=screenshot_path,
+                phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown, _, _ = test(url=url, screenshot_path=screenshot_path,
                                                                                                     AWL_MODEL=AWL_MODEL, CRP_CLASSIFIER=CRP_CLASSIFIER, CRP_LOCATOR_MODEL=CRP_LOCATOR_MODEL,
                                                                                                     SIAMESE_MODEL=SIAMESE_MODEL, OCR_MODEL=OCR_MODEL,
                                                                                                     SIAMESE_THRE=SIAMESE_THRE, LOGO_FEATS=LOGO_FEATS, LOGO_FILES=LOGO_FILES,
