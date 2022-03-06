@@ -7,7 +7,6 @@ from phishintention.src.crp_locator import *
 import helium
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from webdriver_manager.chrome import ChromeDriverManager
-
 from typing import Union
 import yaml
 import subprocess
