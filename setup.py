@@ -63,7 +63,7 @@ setup(name='phishintention',
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
-            "": ["*.yaml", "*.pkl", "*.pth", "*.zip", "*.tar"],
+            "": ["*.yaml", "*.pkl", "*.pth", "*.zip", "*.tar", "*.txt"],
       },
       include_package_data=True
       )

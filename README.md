@@ -82,7 +82,6 @@ pred_target, matched_coord, siamese_conf = phishpedia_classifier_OCR(pred_classe
                                         logo_feat_list=LOGO_FEATS, file_name_list=LOGO_FILES,
                                         url=url, shot_path=screenshot_path,
                                         ts=SIAMESE_THRE)
-print('Phishing (1) or Benign (0) ?', phish_category)
 print('What is its targeted brand if it is a phishing ?', pred_target)
 print('What is the siamese matching confidence ?', siamese_conf)
 

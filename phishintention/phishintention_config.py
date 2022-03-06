@@ -19,7 +19,7 @@ def driver_loader():
     :return:
     '''
 
-    options = initialize_chrome_settings(lang_txt='./src/util/lang.txt')
+    options = initialize_chrome_settings(lang_txt=os.path.join(os.path.dirname(__file__), 'src/util/lang.txt'))
     capabilities = DesiredCapabilities.CHROME
     capabilities["goog:loggingPrefs"] = {"performance": "ALL"}  # chromedriver 75+
     capabilities["unexpectedAlertBehaviour"] = "dismiss"  # handle alert
