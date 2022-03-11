@@ -167,7 +167,35 @@ def phishpedia_config_OCR(num_classes:int, weights_path:str,
                                                        grayscale=grayscale))
                 file_name_list.append(str(os.path.join(targetlist_path, target, logo_path)))
         
-    return model, ocr_model, np.asarray(logo_feat_list), np.asarray(file_name_list)   
+    return model, ocr_model, np.asarray(logo_feat_list), np.asarray(file_name_list)
+
+
+def phishpedia_config_OCR_easy(num_classes: int, weights_path: str,
+                          ocr_weights_path: str):
+    # load OCR model
+    ocr_model = ocr_model_config(checkpoint=ocr_weights_path)
+
+    # Initialize model
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    from .OCR_siamese_utils.siamese_unified.bit_pytorch.models import KNOWN_MODELS
+    model = KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
+
+    # Load weights
+    weights = torch.load(weights_path, map_location='cpu')
+    weights = weights['model'] if 'model' in weights.keys() else weights
+    new_state_dict = OrderedDict()
+    for k, v in weights.items():
+        if k.startswith('module'):
+            name = k.split('module.')[1]
+        else:
+            name = k
+        new_state_dict[name] = v
+
+    model.load_state_dict(new_state_dict)
+    model.to(device)
+    model.eval()
+
+    return model, ocr_model
 
 
 def phishpedia_classifier_OCR(pred_classes, pred_boxes, 
