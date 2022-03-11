@@ -38,8 +38,8 @@ setup(name='phishintention',
                 # 'phishintention.src.phishpedia_siamese.siamese_retrain.bit_pytorch',
                 'phishintention.src.util',
                 'phishintention.src.phishpedia_siamese',
-                'phishintention.src.phishpedia_logo_detector', 'phishintention.src.phishpedia_logo_detector.configs', 'phishintention.src.phishpedia_logo_detector.configs.bases',
-                'phishintention.src.phishpedia_logo_detector.detectron2_1', 'phishintention.src.phishpedia_logo_detector.output'
+                # 'phishintention.src.phishpedia_logo_detector', 'phishintention.src.phishpedia_logo_detector.configs', 'phishintention.src.phishpedia_logo_detector.configs.bases',
+                # 'phishintention.src.phishpedia_logo_detector.detectron2_1', 'phishintention.src.phishpedia_logo_detector.output'
                 ],
       install_requires=[
             'torchsummary',
