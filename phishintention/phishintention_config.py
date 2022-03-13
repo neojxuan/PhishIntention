@@ -34,7 +34,7 @@ def driver_loader():
 
 
 
-def load_config(cfg_path: Union[str, None], reload_targetlist=False):
+def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
 
     #################### '''Default''' ####################
     if cfg_path is None:
