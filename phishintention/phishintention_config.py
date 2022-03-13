@@ -122,11 +122,25 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
                 shell=True,
             )
 
-        SIAMESE_MODEL, OCR_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config_OCR(
-            num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
-            weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'],
-            ocr_weights_path=configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH'],
-            targetlist_path=configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])
+        if os.path.exists(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS.npy')) and reload_targetlist == False:
+            SIAMESE_MODEL, OCR_MODEL = phishpedia_config_OCR_easy(
+                num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+                weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
+                ocr_weights_path=os.path.join(os.path.dirname(__file__),
+                                              configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH']),
+                )
+            LOGO_FEATS = np.load(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS.npy'))
+            LOGO_FILES = np.load(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FILES.npy'))
+
+        else:
+            SIAMESE_MODEL, OCR_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config_OCR(
+                num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
+                weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'],
+                ocr_weights_path=configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH'],
+                targetlist_path=configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])
+            np.save(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS'), LOGO_FEATS)
+            np.save(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FILES'), LOGO_FILES)
+
         print('Finish loading protected logo list')
 
         SIAMESE_THRE = configs['SIAMESE_MODEL']['MATCH_THRE']  # FIXME: threshold is 0.87 in phish-discovery?
