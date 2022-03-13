@@ -68,7 +68,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
                 shell=True,
             )
 
-        if os.path.exists(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy')) and reload_targetlist == False:
+        if os.path.exists(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy')) or reload_targetlist == False:
             SIAMESE_MODEL, OCR_MODEL = phishpedia_config_OCR_easy(num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
                                        weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
                                        ocr_weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH']),
@@ -122,7 +122,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
                 shell=True,
             )
 
-        if os.path.exists(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS.npy')) and reload_targetlist == False:
+        if os.path.exists(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS.npy')) or reload_targetlist == False:
             SIAMESE_MODEL, OCR_MODEL = phishpedia_config_OCR_easy(
                 num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
                 weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
