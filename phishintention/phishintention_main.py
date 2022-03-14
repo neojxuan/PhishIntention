@@ -60,7 +60,7 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
         # If no element is reported
         if len(pred_boxes) == 0:
             print('No element is detected, report as benign')
-            return phish_category, pred_target, plotvis, siamese_conf, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time)
+            return phish_category, pred_target, plotvis, siamese_conf, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time), pred_boxes, pred_classes
         print('Entering siamese')
 
         ######################## Step2: Siamese (logo matcher) ########################################
@@ -115,7 +115,7 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
                 # If dynamic analysis did not reach a CRP
                 if successful == False:
                     print('Dynamic analysis cannot find any link redirected to a CRP page, report as benign')
-                    return phish_category, None, plotvis, None, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time)
+                    return phish_category, None, plotvis, None, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time), pred_boxes, pred_classes
                 else: # dynamic analysis successfully found a CRP
                     dynamic = True
                     print('Dynamic analysis found a CRP, go back to layout detector')
