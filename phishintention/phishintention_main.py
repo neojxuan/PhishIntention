@@ -75,7 +75,9 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
 
         if pred_target is None:
             print('Did not match to any brand, report as benign')
-            return phish_category, pred_target, plotvis, siamese_conf, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time)
+            return phish_category, pred_target, plotvis, siamese_conf, dynamic, \
+                   str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time),\
+                   pred_boxes, pred_classes
 
         ######################## Step3: CRP checker (if a target is reported) #################################
         print('A target is reported by siamese, enter CRP classifier')
