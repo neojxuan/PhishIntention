@@ -89,7 +89,7 @@ First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/PhishIntention.git
 ```
-Run in python
+Run in python to test a single site
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
@@ -143,9 +143,9 @@ driver.quit()
 print('Did dynamic analysis find a CRP ?', successful)
 ```
 
-Or in terminal, type
+Or run in terminal to test a list of sites
 ```
-python run.py --folder <folder you want to test> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
+python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
 ```
 
 <!--## Use it as a repository
