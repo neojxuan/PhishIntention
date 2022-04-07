@@ -89,7 +89,7 @@ First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/PhishIntention.git
 ```
-In python
+Run in python
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
@@ -142,6 +142,12 @@ url, screenshot_path, successful, process_time = dynamic_analysis(url=url, scree
 driver.quit()
 print('Did dynamic analysis find a CRP ?', successful)
 ```
+
+Or in terminal, type
+```
+python run.py --folder <folder you want to test> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
+```
+
 <!--## Use it as a repository
 First install the requirements
 Then, run
