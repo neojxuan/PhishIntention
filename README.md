@@ -33,6 +33,48 @@
     - Else ```Return Benign, None``` 
     
     
+    
+## Project structure
+```
+src
+    |___ AWL_detector_utils/: scripts for abstract layout detector 
+        |__ output/
+            |__ website_lr0.001/
+                |__ model_final.pth
+    |___ crp_classifier_utils/: scripts for CRP classifier
+            |__ output/
+                |__ Increase_resolution_lr0.005/
+                    |__ BiT-M-R50x1V2_0.005.pth.tar
+    |___ crp_locator_utils/: scripts for CRP locator 
+        |__ login_finder/
+            |__ output/
+                |__ lr0.001_finetune/
+                    |__ model_final.pth
+    |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
+        |__ demo_downgrade.pth.tar
+        |__ output/
+            |__ targetlist_lr0.01/
+                |__ bit.pth.tar
+    |___ util/: other scripts (chromedriver utilities)
+    
+    |___ phishpedia_logo_detector/: training script for logo detector (for Phishpedia not PhishIntention)
+    |___ phishpedia_siamese/: inference script for siamese (for Phishpedia not PhishIntention)
+        |__ domain_map.pkl
+        |__ expand_targetlist/
+        
+    |___ adv_attack/: adversarial attacking scripts
+    |___ layout_matcher/: deprecated scripts
+    
+    |___ AWL_detector.py: inference script for AWL detector
+    |___ crp_classifier.py: inference script for CRP classifier
+    |___ OCR_aided_siamese.py: inference script for OCR-aided siamese
+    |___ crp_locator.py: inference script for CRP-Transition locator
+    |___ pipeline_eval.py: evaluation script 
+
+phishintention_config.py: phish-discovery experiment config file for PhishIntention
+phishintention_main.py: phish-discovery experiment evaluation script for PhishIntention
+```
+
 ## Requirements
 The following packages may need to install manually.
 - Windows/Linux/Mac machine 
@@ -100,14 +142,14 @@ url, screenshot_path, successful, process_time = dynamic_analysis(url=url, scree
 driver.quit()
 print('Did dynamic analysis find a CRP ?', successful)
 ```
-
-## Use it as a repository
+<!--## Use it as a repository
 First install the requirements
 Then, run
 ```
 pip install -r requirements.txt
 ```
 Please see detailed instructions in [phishintention/README.md](phishintention/README.md)
+-->
 
 
 ## Miscellaneous
