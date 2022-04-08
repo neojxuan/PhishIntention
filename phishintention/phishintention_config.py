@@ -42,36 +42,34 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
             configs = yaml.load(file, Loader=yaml.FullLoader)
 
         # element recognition model
-        AWL_CFG_PATH = os.path.join(os.path.dirname(__file__), configs['AWL_MODEL']['CFG_PATH'])
-        AWL_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), configs['AWL_MODEL']['WEIGHTS_PATH'])
+        AWL_CFG_PATH = os.path.join(os.path.dirname(__file__), configs['AWL_MODEL']['CFG_PATH'].replace('/', os.sep))
+        AWL_WEIGHTS_PATH = os.path.join(os.path.dirname(__file__), configs['AWL_MODEL']['WEIGHTS_PATH'].replace('/', os.sep))
         AWL_CONFIG, AWL_MODEL = element_config(rcnn_weights_path=AWL_WEIGHTS_PATH, rcnn_cfg_path=AWL_CFG_PATH)
 
         CRP_CLASSIFIER = credential_config(
-            checkpoint=os.path.join(os.path.dirname(__file__), configs['CRP_CLASSIFIER']['WEIGHTS_PATH']),
+            checkpoint=os.path.join(os.path.dirname(__file__), configs['CRP_CLASSIFIER']['WEIGHTS_PATH'].replace('/', os.sep)),
             model_type=configs['CRP_CLASSIFIER']['MODEL_TYPE'])
 
         CRP_LOCATOR_CONFIG, CRP_LOCATOR_MODEL = login_config(
-            rcnn_weights_path=os.path.join(os.path.dirname(__file__), configs['CRP_LOCATOR']['WEIGHTS_PATH']),
-            rcnn_cfg_path=os.path.join(os.path.dirname(__file__), configs['CRP_LOCATOR']['CFG_PATH']))
+            rcnn_weights_path=os.path.join(os.path.dirname(__file__), configs['CRP_LOCATOR']['WEIGHTS_PATH'].replace('/', os.sep)),
+            rcnn_cfg_path=os.path.join(os.path.dirname(__file__), configs['CRP_LOCATOR']['CFG_PATH'].replace('/', os.sep)))
 
         # siamese model
         print('Load protected logo list')
         if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
                 and not os.path.isdir(
-            '{}/{}'.format(os.path.dirname(__file__), configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])):
+            '{}'.format(os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)))):
             subprocess.run(
-                "unzip {}/{} -d {}/{}/".format(os.path.dirname(__file__),
-                                               configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
-                                               os.path.dirname(__file__),
-                                               configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0]
+                "unzip {} -d {}".format(os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['TARGETLIST_PATH'].replace('/', os.sep)),
+                                        os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep), "")
                                                ),
                 shell=True,
             )
 
         if os.path.exists(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy')) and reload_targetlist == False:
             SIAMESE_MODEL, OCR_MODEL = phishpedia_config_OCR_easy(num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
-                                       weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
-                                       ocr_weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH']),
+                                       weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep)),
+                                       ocr_weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH'].replace('/', os.sep)),
                                          )
             LOGO_FEATS = np.load(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS.npy'))
             LOGO_FILES = np.load(os.path.join(os.path.dirname(__file__), 'LOGO_FILES.npy'))
@@ -79,10 +77,10 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
         else:
 
             SIAMESE_MODEL, OCR_MODEL, LOGO_FEATS, LOGO_FILES = phishpedia_config_OCR(num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
-                                                                                     weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH']),
-                                                                                     ocr_weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH']),
+                                                                                     weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['WEIGHTS_PATH'].replace('/', os.sep)),
+                                                                                     ocr_weights_path=os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH'].replace('/', os.sep)),
                                                                                      targetlist_path=os.path.join(os.path.dirname(__file__),
-                                                                                                                  configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0]))
+                                                                                                                  configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0].replace('/', os.sep)))
             np.save(os.path.join(os.path.dirname(__file__), 'LOGO_FEATS'), LOGO_FEATS)
             np.save(os.path.join(os.path.dirname(__file__), 'LOGO_FILES'), LOGO_FILES)
 
@@ -91,7 +89,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False):
         SIAMESE_THRE = configs['SIAMESE_MODEL']['MATCH_THRE'] # FIXME: threshold is 0.87 in phish-discovery?
 
         # brand-domain dictionary
-        DOMAIN_MAP_PATH = os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH'])
+        DOMAIN_MAP_PATH = os.path.join(os.path.dirname(__file__), configs['SIAMESE_MODEL']['DOMAIN_MAP_PATH'].replace('/', os.sep))
 
 
     # #################### '''Customized''' ####################

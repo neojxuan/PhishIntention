@@ -15,6 +15,7 @@ if __name__ == '__main__':
 
     while True: # comment if you want to process it once
         # date = '2021-12-22'
+        # date = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
         date = datetime.today().strftime('%Y-%m-%d')
         print('Today is:', date)
         parser = argparse.ArgumentParser()
