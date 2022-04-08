@@ -89,6 +89,7 @@ Then Run
 pip install -r requirements.txt
 ```
 
+<!--
 ## Instructions
 ### 1. Unzip targetlist
 ```bash
@@ -125,6 +126,7 @@ python -m src.pipeline_eval --data-dir [data folder] \
 ```bash
 python phishintention_main.py --folder [data_folder_you_want_to_test] --results [name_you_want_to_give.txt]
 ```
+-->
 
 <!-- ## Telegram service to label found phishing (Optional)
 ### Introduction

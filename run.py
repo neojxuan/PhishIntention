@@ -5,7 +5,6 @@ import datetime
 import sys
 from datetime import datetime, timedelta, time
 import argparse
-# from phishintention.phishintention_main import *
 import os
 os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
@@ -29,7 +28,6 @@ if __name__ == '__main__':
         print(args)
         runit(args.folder, args.results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL,
               SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH) # if running phishintention
-        # runit_pedia(args.folder, args.results) # if running phishpedia
         print('Process finish')
 
         if not args.repeat:
