@@ -143,7 +143,7 @@ driver.quit()
 print('Did dynamic analysis find a CRP ?', successful)
 ```
 
-Or run in terminal to test a list of sites
+Or run in terminal to test a list of sites, copy run.py to your local machine and run
 ```
 python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --repeat <whether running it iteratively (when the folder is growing)>
 ```
