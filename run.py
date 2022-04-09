@@ -24,7 +24,7 @@ if __name__ == '__main__':
                             help='Input folder path to parse')
         parser.add_argument('-r', "--results", default=date + '.txt',
                             help='Input results file name')
-        parser.add_argument('-t', '--repeat', default=False, action='store_true')
+        parser.add_argument('-t', '--repeat', action='store_true')
         args = parser.parse_args()
         print(args)
         runit(args.folder, args.results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL,
