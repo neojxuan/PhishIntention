@@ -47,8 +47,8 @@ def element_recognition(img, model):
     if isinstance(img, str):
         img_init = cv2.imread(img)
         if img_init is not None:
-            if img.shape[-1] == 4:
-                img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
+            if img_init.shape[-1] == 4:
+                img = cv2.cvtColor(img_init, cv2.COLOR_BGRA2BGR)
         else:
             return None, None, None
     elif isinstance(img, np.ndarray):
