@@ -151,6 +151,6 @@ folder = "[the folder you want to label]"
  
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- We did not include the certstream code in this repo, our code is basically the same as [phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
-- We also did not include the crawling script in this repo, readers can use [Selenium](https://selenium-python.readthedocs.io/), [Scrapy](https://github.com/scrapy/scrapy) or any web-crawling API to crawl the domains obtained from Cerstream, just make sure that the crawled websites are stored in [this format](https://github.com/lindsey98/Phishpedia/tree/main/phishpedia/datasets/test_sites/accounts.g.cdcde.com)
+- We obtain feed from [Certstream phish_catcher](https://github.com/x0rz/phishing_catcher), we lower the score threshold to be 40 to process more suspicious websites, readers can refer to their repo for details
+- We use Scrapy for website crawling [Repo here](https://github.com/lindsey98/MyScrapy.git) 
 
