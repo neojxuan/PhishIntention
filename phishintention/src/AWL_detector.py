@@ -45,18 +45,18 @@ def element_recognition(img, model):
     :return pred_scores: torch.Tensor of shape Nx1, prediction confidence of bounding boxes
     '''
     if isinstance(img, str):
-        img_init = cv2.imread(img)
-        if img_init is not None:
-            if img_init.shape[-1] == 4:
-                img = cv2.cvtColor(img_init, cv2.COLOR_BGRA2BGR)
+        img_processed = cv2.imread(img)
+        if img_processed is not None:
+            if img_processed.shape[-1] == 4:
+                img_processed = cv2.cvtColor(img_processed, cv2.COLOR_BGRA2BGR)
         else:
             return None, None, None
     elif isinstance(img, np.ndarray):
-        img = img
+        img_processed = img
     else:
         raise NotImplementedError
 
-    pred = model(img)
+    pred = model(img_processed)
     pred_i = pred["instances"].to("cpu")
     pred_classes = pred_i.pred_classes # Boxes types
     pred_boxes = pred_i.pred_boxes.tensor # Boxes coords
@@ -89,6 +89,8 @@ def vis(img_path, pred_boxes, pred_classes):
     '''
     
     check = cv2.imread(img_path)
+    if pred_boxes is None:
+        return check
     if len(pred_boxes) == 0: # no element
         return check
     

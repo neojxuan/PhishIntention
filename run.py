@@ -14,9 +14,9 @@ if __name__ == '__main__':
     AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(None)
 
     while True: # comment if you want to process it once
-        # date = '2021-12-22'
+        date = '2022-05-08'
         # date = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
-        date = datetime.today().strftime('%Y-%m-%d')
+        # date = datetime.today().strftime('%Y-%m-%d')
         print('Today is:', date)
         parser = argparse.ArgumentParser()
         parser.add_argument('-f', "--folder",

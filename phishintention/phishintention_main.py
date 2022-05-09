@@ -58,7 +58,7 @@ def test(url, screenshot_path, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIA
         print("plot")
 
         # If no element is reported
-        if len(pred_boxes) == 0:
+        if pred_boxes is None or len(pred_boxes) == 0:
             print('No element is detected, report as benign')
             return phish_category, pred_target, plotvis, siamese_conf, dynamic, str(ele_detector_time)+'|'+str(siamese_time)+'|'+str(crp_time)+'|'+str(dynamic_time)+'|'+str(process_time), pred_boxes, pred_classes
         print('Entering siamese')
@@ -160,56 +160,57 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
         if item in open(results, encoding='ISO-8859-1').read():
             continue # have been predicted
 
-        try:
-            print(item)
-            full_path = os.path.join(directory, item)
-            screenshot_path = os.path.join(full_path, "shot.png")
-            url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
+        # try:
+        print(item)
+        full_path = os.path.join(directory, item)
+        screenshot_path = os.path.join(full_path, "shot.png")
+        url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
 
-            if not os.path.exists(screenshot_path): # screenshot not exist
-                continue
+        if not os.path.exists(screenshot_path): # screenshot not exist
+            continue
 
-            else:
-                start_time = time.time()
-                phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown, _, _ = test(url=url, screenshot_path=screenshot_path,
-                                                                                                    AWL_MODEL=AWL_MODEL, CRP_CLASSIFIER=CRP_CLASSIFIER, CRP_LOCATOR_MODEL=CRP_LOCATOR_MODEL,
-                                                                                                    SIAMESE_MODEL=SIAMESE_MODEL, OCR_MODEL=OCR_MODEL,
-                                                                                                    SIAMESE_THRE=SIAMESE_THRE, LOGO_FEATS=LOGO_FEATS, LOGO_FILES=LOGO_FILES,
-                                                                                                    DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
-                end_time = time.time()
+        else:
+            start_time = time.time()
+            phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown, _, _ = test(url=url, screenshot_path=screenshot_path,
+                                                                                                AWL_MODEL=AWL_MODEL, CRP_CLASSIFIER=CRP_CLASSIFIER, CRP_LOCATOR_MODEL=CRP_LOCATOR_MODEL,
+                                                                                                SIAMESE_MODEL=SIAMESE_MODEL, OCR_MODEL=OCR_MODEL,
+                                                                                                SIAMESE_THRE=SIAMESE_THRE, LOGO_FEATS=LOGO_FEATS, LOGO_FILES=LOGO_FILES,
+                                                                                                DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
+            end_time = time.time()
 
-                # FIXME: call VTScan only when phishintention report it as positive
-                vt_result = "None"
-                if phish_target is not None:
-                    try:
-                        if vt_scan(url) is not None:
-                            positive, total = vt_scan(url)
-                            print("Positive VT scan!")
-                            vt_result = str(positive) + "/" + str(total)
-                        else:
-                            print("Negative VT scan!")
-                            vt_result = "None"
+            # FIXME: call VTScan only when phishintention report it as positive
+            vt_result = "None"
+            if phish_target is not None:
+                try:
+                    if vt_scan(url) is not None:
+                        positive, total = vt_scan(url)
+                        print("Positive VT scan!")
+                        vt_result = str(positive) + "/" + str(total)
+                    else:
+                        print("Negative VT scan!")
+                        vt_result = "None"
 
-                    except Exception as e:
-                        print('VTScan is not working...')
-                        vt_result = "error"
+                except Exception as e:
+                    print('VTScan is not working...')
+                    vt_result = "error"
 
-                # write results as well as predicted image
-                with open(results, "a+", encoding='ISO-8859-1') as f:
-                    f.write(item + "\t")
-                    f.write(url +"\t")
-                    f.write(str(phish_category) +"\t")
-                    f.write(str(phish_target) + "\t") # write top1 prediction only
-                    f.write(str(siamese_conf) + "\t")
-                    f.write(vt_result +"\t")
-                    f.write(str(dynamic) + "\t")
-                    f.write(time_breakdown + "\t")
-                    f.write(str(end_time - start_time) + "\n")
+            # write results as well as predicted image
+            with open(results, "a+", encoding='ISO-8859-1') as f:
+                f.write(item + "\t")
+                f.write(url +"\t")
+                f.write(str(phish_category) +"\t")
+                f.write(str(phish_target) + "\t") # write top1 prediction only
+                f.write(str(siamese_conf) + "\t")
+                f.write(vt_result +"\t")
+                f.write(str(dynamic) + "\t")
+                f.write(time_breakdown + "\t")
+                f.write(str(end_time - start_time) + "\n")
 
+            if plotvis is not None:
                 cv2.imwrite(os.path.join(full_path, "predict_intention.png"), plotvis)
 
-        except Exception as e:
-            print(str(e))
+        # except Exception as e:
+        #     print(str(e))
 
 if __name__ == "__main__":
 
