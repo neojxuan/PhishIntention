@@ -112,35 +112,6 @@ print('Where are the predicted bounding boxes (in [x_min, y_min, x_max, y_max])?
 plt.imshow(plotvis[:, :, ::-1])
 plt.title("Predicted screenshot with annotations")
 plt.show()
-
-# use AWL detector
-pred_classes, pred_boxes, pred_scores = element_recognition(img=screenshot_path, model=AWL_MODEL)
-print('Where are the predicted bounding boxes (in [x_min, y_min, x_max, y_max])?', pred_boxes)
-
-# use OCR Siamese
-pred_target, matched_coord, siamese_conf = phishpedia_classifier_OCR(pred_classes=pred_classes, pred_boxes=pred_boxes, 
-                                        domain_map_path=DOMAIN_MAP_PATH, model=SIAMESE_MODEL,
-                                        ocr_model = OCR_MODEL,
-                                        logo_feat_list=LOGO_FEATS, file_name_list=LOGO_FILES,
-                                        url=url, shot_path=screenshot_path,
-                                        ts=SIAMESE_THRE)
-print('What is its targeted brand if it is a phishing ?', pred_target)
-print('What is the siamese matching confidence ?', siamese_conf)
-
-# use CRP classifier
-cre_pred, cred_conf, _  = credential_classifier_mixed_al(img=screenshot_path, coords=pred_boxes,
-                                                         types=pred_classes, model=CRP_CLASSIFIER)
-print('CRP page (0) or non-CRP page (1) ?', cre_pred)
-
-# use CRP locator (url has to be alive)
-driver = driver_loader()
-print('Finish loading webdriver')
-url, screenshot_path, successful, process_time = dynamic_analysis(url=url, screenshot_path=screenshot_path,
-                                                cls_model=CRP_CLASSIFIER, ele_model=AWL_MODEL, 
-                                                login_model=CRP_LOCATOR_MODEL,
-                                                driver=driver)
-driver.quit()
-print('Did dynamic analysis find a CRP ?', successful)
 ```
 
 Or run in terminal to test a list of sites, copy run.py to your local machine and run
