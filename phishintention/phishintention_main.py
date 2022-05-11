@@ -195,19 +195,22 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
                     vt_result = "error"
 
             # write results as well as predicted image
-            with open(results, "a+", encoding='ISO-8859-1') as f:
-                f.write(item + "\t")
-                f.write(url +"\t")
-                f.write(str(phish_category) +"\t")
-                f.write(str(phish_target) + "\t") # write top1 prediction only
-                f.write(str(siamese_conf) + "\t")
-                f.write(vt_result +"\t")
-                f.write(str(dynamic) + "\t")
-                f.write(time_breakdown + "\t")
-                f.write(str(end_time - start_time) + "\n")
+            try:
+                with open(results, "a+", encoding='ISO-8859-1') as f:
+                    f.write(item + "\t")
+                    f.write(url +"\t")
+                    f.write(str(phish_category) +"\t")
+                    f.write(str(phish_target) + "\t") # write top1 prediction only
+                    f.write(str(siamese_conf) + "\t")
+                    f.write(vt_result +"\t")
+                    f.write(str(dynamic) + "\t")
+                    f.write(time_breakdown + "\t")
+                    f.write(str(end_time - start_time) + "\n")
 
-            if plotvis is not None:
-                cv2.imwrite(os.path.join(full_path, "predict_intention.png"), plotvis)
+                if plotvis is not None:
+                    cv2.imwrite(os.path.join(full_path, "predict_intention.png"), plotvis)
+            except UnicodeEncodeError:
+                continue
 
         # except Exception as e:
         #     print(str(e))
