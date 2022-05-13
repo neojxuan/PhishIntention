@@ -156,7 +156,6 @@ def keyword_heuristic(driver, orig_url, page_text,
                 writetxt(new_html_path, driver.page_source)
                 writetxt(new_info_path, str(current_url))
                 time_deduct += time.time() - start_time
-                ct += 1 # count +1
 
                 # Call CRP classifier
                 # CRP HTML heuristic
