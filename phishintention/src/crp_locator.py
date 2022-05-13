@@ -56,14 +56,12 @@ def login_recognition(img, model):
     :return pred_scores: torch.Tensor of shape Nx1, prediction confidence of bounding boxes
     '''
     if not isinstance(img, np.ndarray):
-        if not isinstance(img, np.ndarray):
-            img_init = cv2.imread(img)
-            if img_init is None:
-                img = cv_imread(img)
-                if img.shape[-1] == 4:
-                    img = cv2.cvtColor(img, cv2.COLOR_BGRA2BGR)
-            else:
-                img = img_init
+        img_init = cv2.imread(img)
+        if img_init is None:
+            return None, None, None
+        else:
+            if img_init.shape[-1] == 4:
+                img = cv2.cvtColor(img_init, cv2.COLOR_BGRA2BGR)
     else:
         img = img
         
@@ -224,7 +222,7 @@ def cv_heuristic(driver, orig_url, old_screenshot_path,
     reach_crp = False
     time_deduct = 0
     # if no prediction at all
-    if len(pred_boxes) == 0:
+    if pred_boxes is None or len(pred_boxes) == 0:
         return reach_crp, time_deduct
 
     for bbox in pred_boxes.detach().cpu().numpy()[: min(3, len(pred_boxes))]: # only for top3 boxes
