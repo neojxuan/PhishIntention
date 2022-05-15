@@ -55,17 +55,17 @@ def login_recognition(img, model):
     :return pred_boxes: torch.Tensor of shape Nx4, bounding box coordinates in (x1, y1, x2, y2)
     :return pred_scores: torch.Tensor of shape Nx1, prediction confidence of bounding boxes
     '''
-    if not isinstance(img, np.ndarray):
-        img_init = cv2.imread(img)
-        if img_init is None:
+    if isinstance(img, str):
+        img_processed = cv2.imread(img)
+        if img_processed is None:
             return None, None, None
         else:
-            if img_init.shape[-1] == 4:
-                img = cv2.cvtColor(img_init, cv2.COLOR_BGRA2BGR)
+            if img_processed.shape[-1] == 4:
+                img_processed = cv2.cvtColor(img_processed, cv2.COLOR_BGRA2BGR)
     else:
-        img = img
+        img_processed = img
         
-    pred = model(img)
+    pred = model(img_processed)
     pred_i = pred["instances"].to("cpu")
     pred_classes = pred_i.pred_classes # Boxes types
     pred_boxes = pred_i.pred_boxes.tensor # Boxes coords
