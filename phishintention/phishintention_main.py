@@ -163,57 +163,57 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
         # try:
         print(item)
         full_path = os.path.join(directory, item)
+        if item == '' or not os.path.exists(full_path):  # screenshot not exist
+            continue
         screenshot_path = os.path.join(full_path, "shot.png")
-        url = open(os.path.join(full_path, 'info.txt'), encoding='ISO-8859-1').read()
+        info_path = os.path.join(full_path, 'info.txt')
+        if not os.path.exists(screenshot_path) or not os.path.exists(info_path):  # screenshot not exist
+            continue
+        url = open(info_path, encoding='ISO-8859-1').read()
 
-        if not os.path.exists(screenshot_path): # screenshot not exist
+
+        start_time = time.time()
+        phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown, _, _ = test(url=url, screenshot_path=screenshot_path,
+                                                                                            AWL_MODEL=AWL_MODEL, CRP_CLASSIFIER=CRP_CLASSIFIER, CRP_LOCATOR_MODEL=CRP_LOCATOR_MODEL,
+                                                                                            SIAMESE_MODEL=SIAMESE_MODEL, OCR_MODEL=OCR_MODEL,
+                                                                                            SIAMESE_THRE=SIAMESE_THRE, LOGO_FEATS=LOGO_FEATS, LOGO_FILES=LOGO_FILES,
+                                                                                            DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
+        end_time = time.time()
+
+        # FIXME: call VTScan only when phishintention report it as positive
+        vt_result = "None"
+        if phish_target is not None:
+            try:
+                if vt_scan(url) is not None:
+                    positive, total = vt_scan(url)
+                    print("Positive VT scan!")
+                    vt_result = str(positive) + "/" + str(total)
+                else:
+                    print("Negative VT scan!")
+                    vt_result = "None"
+
+            except Exception as e:
+                print('VTScan is not working...')
+                vt_result = "error"
+
+        # write results as well as predicted image
+        try:
+            with open(results, "a+", encoding='ISO-8859-1') as f:
+                f.write(item + "\t")
+                f.write(url +"\t")
+                f.write(str(phish_category) +"\t")
+                f.write(str(phish_target) + "\t") # write top1 prediction only
+                f.write(str(siamese_conf) + "\t")
+                f.write(vt_result +"\t")
+                f.write(str(dynamic) + "\t")
+                f.write(time_breakdown + "\t")
+                f.write(str(end_time - start_time) + "\n")
+
+            if plotvis is not None:
+                cv2.imwrite(os.path.join(full_path, "predict_intention.png"), plotvis)
+        except UnicodeEncodeError:
             continue
 
-        else:
-            start_time = time.time()
-            phish_category, phish_target, plotvis, siamese_conf, dynamic, time_breakdown, _, _ = test(url=url, screenshot_path=screenshot_path,
-                                                                                                AWL_MODEL=AWL_MODEL, CRP_CLASSIFIER=CRP_CLASSIFIER, CRP_LOCATOR_MODEL=CRP_LOCATOR_MODEL,
-                                                                                                SIAMESE_MODEL=SIAMESE_MODEL, OCR_MODEL=OCR_MODEL,
-                                                                                                SIAMESE_THRE=SIAMESE_THRE, LOGO_FEATS=LOGO_FEATS, LOGO_FILES=LOGO_FILES,
-                                                                                                DOMAIN_MAP_PATH=DOMAIN_MAP_PATH)
-            end_time = time.time()
-
-            # FIXME: call VTScan only when phishintention report it as positive
-            vt_result = "None"
-            if phish_target is not None:
-                try:
-                    if vt_scan(url) is not None:
-                        positive, total = vt_scan(url)
-                        print("Positive VT scan!")
-                        vt_result = str(positive) + "/" + str(total)
-                    else:
-                        print("Negative VT scan!")
-                        vt_result = "None"
-
-                except Exception as e:
-                    print('VTScan is not working...')
-                    vt_result = "error"
-
-            # write results as well as predicted image
-            try:
-                with open(results, "a+", encoding='ISO-8859-1') as f:
-                    f.write(item + "\t")
-                    f.write(url +"\t")
-                    f.write(str(phish_category) +"\t")
-                    f.write(str(phish_target) + "\t") # write top1 prediction only
-                    f.write(str(siamese_conf) + "\t")
-                    f.write(vt_result +"\t")
-                    f.write(str(dynamic) + "\t")
-                    f.write(time_breakdown + "\t")
-                    f.write(str(end_time - start_time) + "\n")
-
-                if plotvis is not None:
-                    cv2.imwrite(os.path.join(full_path, "predict_intention.png"), plotvis)
-            except UnicodeEncodeError:
-                continue
-
-        # except Exception as e:
-        #     print(str(e))
 
 if __name__ == "__main__":
 
