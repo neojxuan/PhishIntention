@@ -167,9 +167,12 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
             continue
         screenshot_path = os.path.join(full_path, "shot.png")
         info_path = os.path.join(full_path, 'info.txt')
-        if not os.path.exists(screenshot_path) or not os.path.exists(info_path):  # screenshot not exist
+        if not os.path.exists(screenshot_path):  # screenshot not exist
             continue
-        url = open(info_path, encoding='ISO-8859-1').read()
+        try:
+            url = open(info_path, encoding='ISO-8859-1').read()
+        except:
+            url = 'https://www' + item
 
 
         start_time = time.time()
