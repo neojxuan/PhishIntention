@@ -89,6 +89,11 @@ First install the requirements, then run
 ```
  pip install git+https://github.com/lindsey98/PhishIntention.git
 ```
+Installing Git LFS (https://git-lfs.github.com/) to the machine you use, then run
+```
+cd PhishIntention
+git lfs pull
+```
 Run in python to test a single site
 ```python
 from phishintention.phishintention_main import test
