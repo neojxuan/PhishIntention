@@ -157,7 +157,7 @@ def runit(folder, results, AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE
 
     for item in tqdm(os.listdir(directory)):
 
-        if item in open(results, encoding='ISO-8859-1').read():
+        if item in [x.split('\t')[0] for x in open(results, encoding='ISO-8859-1').readlines()]:
             continue # have been predicted
 
         # try:
