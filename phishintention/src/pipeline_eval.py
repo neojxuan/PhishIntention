@@ -7,7 +7,7 @@ import time
 from phishintention.src.OCR_aided_siamese import *
 from phishintention.src.AWL_detector import *
 from phishintention.src.crp_classifier import *
-from phishintention.src.phishpedia_logo_detector.inference import *
+# from phishintention.src.phishpedia_logo_detector.inference import *
 import argparse
 import errno
 # import torch.multiprocessing as mp
