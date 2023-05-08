@@ -74,7 +74,11 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Instructions
-1. Run setup.sh
+1. Run 
+```
+chmod +x setup.sh
+./setup.sh
+```
 
 2.
 To test a single site
