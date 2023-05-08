@@ -74,16 +74,10 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Instructions
-1. Installing Git LFS (https://git-lfs.github.com/)
-2. Install the requirements
-   - Create an environment with python=3.7 
-   - Install torch, torchvision compatible with your CUDA, see here: https://pytorch.org/get-started/previous-versions/
-   - Install compatible Detectron2, see the [official installation guide](https://detectron2.readthedocs.io/en/latest/tutorials/install.html). If you are using Windows, try this [guide](https://dgmaxime.medium.com/how-to-easily-install-detectron2-on-windows-10-39186139101c) instead.
-3. Install PhishIntention by
-```
- pip install git+https://github.com/lindsey98/PhishIntention.git
-```
-Run in python to test a single site
+1. Run setup.sh
+
+2.
+To test a single site
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
