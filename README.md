@@ -123,7 +123,7 @@ Please see detailed instructions in [phishintention/README.md](phishintention/RE
 
 
 ## Miscellaneous
- - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing): And then move the models to your **PhishIntention package**.
+<!--  - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing): And then move the models to your **PhishIntention package**.
 Make sure that it follows this structure:
 ```
 Under phishintention/phishintention/src
@@ -145,7 +145,7 @@ Under phishintention/phishintention/src
       |__ output/
           |__ targetlist_lr0.01/
               |__ bit.pth.tar
-```
+``` -->
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The phishing discovery crawling scripts is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
