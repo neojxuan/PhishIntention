@@ -81,6 +81,10 @@ chmod +x setup.sh
 ```
 
 2.
+Active conda environment "phish"
+```
+conda activate phish
+```
 To test a single site
 ```python
 from phishintention.phishintention_main import test
