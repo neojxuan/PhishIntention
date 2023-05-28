@@ -34,7 +34,7 @@ if ! command -v nvcc &> /dev/null; then
     echo "CUDA is not available."
     pip install torch==1.9.0 torchvision
     # Install Detectron2
-    python -m --user pip install 'git+https://github.com/facebookresearch/detectron2.git'
+    python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
 else
     cuda_version=$(nvcc --version | grep release | awk '{print $6}' | cut -c2- | awk -F. '{print $1"."$2}')
     pip install torch==1.9.0 torchvision -f "https://download.pytorch.org/whl/cu${cuda_version//.}/torch_stable.html"
