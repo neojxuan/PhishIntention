@@ -55,7 +55,7 @@ fi
 
 # Install PhishIntention
 export LD_LIBRARY_PATH=""
-pip install git+https://github.com/lindsey98/PhishIntention.git
+# pip install git+https://github.com/lindsey98/PhishIntention.git
 package_location=$(pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
