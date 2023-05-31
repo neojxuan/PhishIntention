@@ -74,6 +74,9 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Instructions
+Requirements: 
+- CUDA 11
+
 1. Create a local clone of PhishIntention
 ```
 git clone https://github.com/lindsey98/PhishIntention.git
