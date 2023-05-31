@@ -7,7 +7,7 @@ CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
 
 # # Create a new conda environment with Python 3.7
-ENV_NAME="myenv"
+ENV_NAME="py37"
 
 # Check if the environment already exists
 conda info --envs | grep -w "$ENV_NAME" > /dev/null
