@@ -25,8 +25,7 @@ def driver_loader():
     capabilities["unexpectedAlertBehaviour"] = "dismiss"  # handle alert
     capabilities["pageLoadStrategy"] = "eager"  # eager mode #FIXME: set eager mode, may load partial webpage
 
-    driver = webdriver.Chrome(executable_path=os.path.join(os.path.dirname(__file__),
-                                                           "src/util/chromedriver"),
+    driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(),
                               desired_capabilities=capabilities,
                               chrome_options=options)
     driver.set_page_load_timeout(60)  # set timeout to avoid wasting time
