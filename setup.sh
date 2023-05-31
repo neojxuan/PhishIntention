@@ -1,30 +1,30 @@
 #!/bin/bash
 
 # Source the Conda configuration
-# CONDA_BASE=$(conda info --base)
-# source "$CONDA_BASE/etc/profile.d/conda.sh"
+ CONDA_BASE=$(conda info --base)
+ source "$CONDA_BASE/etc/profile.d/conda.sh"
 
 # # Create a new conda environment with Python 3.7
-# ENV_NAME="phish"
+ ENV_NAME="py37"
 
-# # Check if the environment already exists
-# conda info --envs | grep -w "$ENV_NAME" > /dev/null
+ # Check if the environment already exists
+ conda info --envs | grep -w "$ENV_NAME" > /dev/null
 
-# if [ $? -eq 0 ]; then
-#     # If the environment exists, activate it
-#     echo "Activating Conda environment $ENV_NAME"
-#     conda activate "$ENV_NAME"
-# else
-#     # If the environment doesn't exist, create it with Python 3.7 and activate it
-#     echo "Creating and activating new Conda environment $ENV_NAME with Python 3.7"
-#     conda create -n "$ENV_NAME" python=3.7
-#     conda activate "$ENV_NAME"
-# fi
+ if [ $? -eq 0 ]; then
+     # If the environment exists, activate it
+     echo "Activating Conda environment $ENV_NAME"
+     conda activate "$ENV_NAME"
+ else
+     # If the environment doesn't exist, create it with Python 3.7 and activate it
+     echo "Creating and activating new Conda environment $ENV_NAME with Python 3.7"
+     conda create -n "$ENV_NAME" python=3.7
+     conda activate "$ENV_NAME"
+ fi
 
-# mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
-# echo "MKL path is $mkl_path"
-# # Export the LD_LIBRARY_PATH environment variable
-# export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
+ mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
+ echo "MKL path is $mkl_path"
+ # Export the LD_LIBRARY_PATH environment variable
+ export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 pip install -r requirements.txt
@@ -55,7 +55,6 @@ fi
 
 # Install PhishIntention
 export LD_LIBRARY_PATH=""
-# pip install git+https://github.com/lindsey98/PhishIntention.git
 package_location=$(pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
