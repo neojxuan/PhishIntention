@@ -74,8 +74,13 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Instructions
-1. Run 
+1. Create a local clone of PhishIntention
 ```
+git clone https://github.com/lindsey98/PhishIntention.git
+```
+Run setup 
+```
+cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
 ```
