@@ -16,7 +16,7 @@ tldextract
 opencv-python
 selenium
 helium
-selenium-wire
+selenium-wire==4.4.0
 webdriver-manager
 pandas
 numpy
@@ -30,3 +30,4 @@ python-telegram-bot
 gspread
 oauth2client
 editdistance
+lxml
