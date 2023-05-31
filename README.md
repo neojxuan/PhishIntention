@@ -91,7 +91,7 @@ chmod +x setup.sh
 2.
 To test a single site
 ```commandline
-conda activate py37
+conda activate myenv
 ```
 ```python
 from phishintention.phishintention_main import test
