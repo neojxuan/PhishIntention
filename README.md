@@ -87,6 +87,9 @@ chmod +x setup.sh
 
 2.
 To test a single site
+```commandline
+conda activate py37
+```
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
