@@ -39,6 +39,13 @@ pip install torch==1.9.0 torchvision -f \
 python -m pip install detectron2 -f \
   https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
 
+pip install httpcore
+pip install h2
+pip install hyperframe
+pip install fuzzywuzzy
+pip install h11==0.8.1
+pip install selenium==4.0.0
+
 # Install PhishIntention
 export LD_LIBRARY_PATH=""
 pip install git+https://github.com/lindsey98/PhishIntention.git
