@@ -40,7 +40,7 @@ python -m pip install detectron2 -f \
   https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
 
 # Install PhishIntention
-pip install -v -e .
+pip install -v .
 package_location=$(pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
