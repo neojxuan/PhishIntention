@@ -17,7 +17,7 @@ if __name__ == '__main__':
     print('Today is:', date)
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', "--folder",
-                        default='E:\\screenshots_rf\\{}'.format(date),
+                        default='phishintention/datasets/test_sites',
                         help='Input folder path to parse')
     parser.add_argument('-r', "--results", default=date + '.txt',
                         help='Input results file name')

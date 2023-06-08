@@ -26,14 +26,12 @@ def phishpedia_config(num_classes:int, weights_path:str, targetlist_path:str, gr
     # Initialize model
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     model = KNOWN_MODELS["BiT-M-R50x1"](head_size=num_classes, zero_head=True)
-#     model = KNOWN_MODELS["SE-R50x32"](head_size=num_classes)
 
     # Load weights
     weights = torch.load(weights_path, map_location='cpu')
     weights = weights['model'] if 'model' in weights.keys() else weights
     new_state_dict = OrderedDict()
     for k, v in weights.items():
-#         name = k[7:]
         name = k.split('module.')[1]
         new_state_dict[name]=v
         
@@ -100,11 +98,11 @@ def phishpedia_classifier(pred_classes, pred_boxes,
                                                          shot_path, bbox, t_s=ts, grayscale=False)
             
             # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain not in domain_this):
+            if (target_this is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in domain_this):
                 # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-#                 if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
-#                     target_this = None # ignore the prediction
-#                     this_conf = None
+                if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
+                    target_this = None # ignore the prediction
+                    this_conf = None
                 pred_target = target_this
                 matched_coord = coord
                 siamese_conf = this_conf
@@ -236,17 +234,17 @@ def phishpedia_classifier_OCR(pred_classes, pred_boxes,
         for i, coord in enumerate(logo_boxes):
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
-            target_this, domain_this, this_conf = siamese_inference_OCR(model, ocr_model, domain_map, 
+            matched_target, matched_domain, this_conf = siamese_inference_OCR(model, ocr_model, domain_map,
                                                          logo_feat_list, file_name_list,
                                                          shot_path, bbox, t_s=ts, grayscale=False)
             
             # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain not in domain_this):
+            if (matched_target is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in matched_domain):
                 # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-#                 if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
-#                     target_this = None # ignore the prediction
-#                     this_conf = None
-                pred_target = target_this
+                if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
+                    matched_target = None # ignore the prediction
+                    this_conf = None
+                pred_target = matched_target
                 matched_coord = coord
                 siamese_conf = this_conf
                 break # break if target is matched
@@ -293,11 +291,11 @@ def phishpedia_classifier_logo(logo_boxes,
                                                                     shot_path, bbox, t_s=ts, grayscale=False)
 
             # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain not in domain_this):
+            if (target_this is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in domain_this):
                 # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-#                 if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
-#                     target_this = None  # ignore the prediction
-#                     this_conf = None
+                if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
+                    target_this = None  # ignore the prediction
+                    this_conf = None
                 pred_target = target_this
                 matched_coord = coord
                 siamese_conf = this_conf
