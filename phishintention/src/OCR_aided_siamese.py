@@ -185,11 +185,9 @@ def phishpedia_classifier(pred_classes, pred_boxes,
                     if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
                         matched_target = None  # ignore the prediction
                         matched_domain = None  # ignore the prediction
-                        this_conf = None
                 else:  # benign, real target
                     matched_target = None  # ignore the prediction
                     matched_domain = None  # ignore the prediction
-                    this_conf = None
                 break
             break  # only look at 1st logo
 
@@ -240,11 +238,9 @@ def phishpedia_classifier_OCR(pred_classes, pred_boxes,
                     if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
                         matched_target = None # ignore the prediction
                         matched_domain = None # ignore the prediction
-                        this_conf = None
                 else: # benign, real target
                     matched_target = None  # ignore the prediction
                     matched_domain = None  # ignore the prediction
-                    this_conf = None
                 break # break if target is matched
             break # only look at 1st logo
 
@@ -292,11 +288,9 @@ def phishpedia_classifier_logo(logo_boxes,
                     if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
                         matched_target = None  # ignore the prediction
                         matched_domain = None  # ignore the prediction
-                        this_conf = None
                 else:  # benign, real target
                     matched_target = None  # ignore the prediction
                     matched_domain = None  # ignore the prediction
-                    this_conf = None
                 break  # break if target is matched
             break
 
