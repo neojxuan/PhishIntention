@@ -56,61 +56,6 @@ def phishpedia_config(num_classes:int, weights_path:str, targetlist_path:str, gr
         
     return model, np.asarray(logo_feat_list), np.asarray(file_name_list)   
 
-def phishpedia_classifier(pred_classes, pred_boxes, 
-                          domain_map_path:str,
-                          model, logo_feat_list, file_name_list, shot_path:str, 
-                          url:str, 
-                          ts:float):
-    '''
-    Run siamese
-    :param pred_classes: torch.Tensor/np.ndarray Nx1 predicted box types
-    :param pred_boxes: torch.Tensor/np.ndarray Nx4 predicted box coords
-    :param domain_map_path: path to domain map dict
-    :param model: siamese model
-    :param logo_feat_list: targetlist embeddings
-    :param file_name_list: targetlist paths
-    :param shot_path: path to image
-    :param url: url
-    :param ts: siamese threshold
-    :return pred_target
-    :return coord: coordinate for matched logo
-    '''
-    # targetlist domain list
-    with open(domain_map_path, 'rb') as handle:
-        domain_map = pickle.load(handle)
-        
-    # look at boxes for logo class only
-    # print(pred_classes)
-    logo_boxes = pred_boxes[pred_classes==0] 
-#     print('number of logo boxes:', len(logo_boxes))
-    matched_coord = None
-    siamese_conf = None
-    
-    # run logo matcher
-    pred_target = None
-    if len(logo_boxes) > 0:
-        # siamese prediction for logo box
-        for i, coord in enumerate(logo_boxes):
-            min_x, min_y, max_x, max_y = coord
-            bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
-            target_this, domain_this, this_conf = siamese_inference(model, domain_map, 
-                                                         logo_feat_list, file_name_list,
-                                                         shot_path, bbox, t_s=ts, grayscale=False)
-            
-            # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in domain_this):
-                # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-                if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
-                    target_this = None # ignore the prediction
-                    this_conf = None
-                pred_target = target_this
-                matched_coord = coord
-                siamese_conf = this_conf
-                break # break if target is matched
-            break # only look at 1st logo
-
-    return brand_converter(pred_target), matched_coord, siamese_conf
-
 
 def phishpedia_config_OCR(num_classes:int, weights_path:str, 
                           ocr_weights_path:str,
@@ -196,6 +141,60 @@ def phishpedia_config_OCR_easy(num_classes: int, weights_path: str,
     return model, ocr_model
 
 
+def phishpedia_classifier(pred_classes, pred_boxes,
+                          domain_map_path: str,
+                          model, logo_feat_list, file_name_list, shot_path: str,
+                          url: str,
+                          ts: float):
+    '''
+    Run siamese
+    :param pred_classes: torch.Tensor/np.ndarray Nx1 predicted box types
+    :param pred_boxes: torch.Tensor/np.ndarray Nx4 predicted box coords
+    :param domain_map_path: path to domain map dict
+    :param model: siamese model
+    :param logo_feat_list: targetlist embeddings
+    :param file_name_list: targetlist paths
+    :param shot_path: path to image
+    :param url: url
+    :param ts: siamese threshold
+    :return pred_target
+    :return coord: coordinate for matched logo
+    '''
+    # targetlist domain list
+    with open(domain_map_path, 'rb') as handle:
+        domain_map = pickle.load(handle)
+
+    # look at boxes for logo class only
+    logo_boxes = pred_boxes[pred_classes == 0]
+    matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
+
+    # run logo matcher
+    if len(logo_boxes) > 0:
+        # siamese prediction for logo box
+        for i, coord in enumerate(logo_boxes):
+            min_x, min_y, max_x, max_y = coord
+            bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
+            matched_target, matched_domain, this_conf = siamese_inference(model, domain_map,
+                                                                          logo_feat_list, file_name_list,
+                                                                          shot_path, bbox, t_s=ts, grayscale=False)
+
+            # domain matcher to avoid FP
+            if matched_target is not None:
+                if tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix not in matched_domain:
+                    # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
+                    if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
+                        matched_target = None  # ignore the prediction
+                        matched_domain = None  # ignore the prediction
+                        this_conf = None
+                else:  # benign, real target
+                    matched_target = None  # ignore the prediction
+                    matched_domain = None  # ignore the prediction
+                    this_conf = None
+                break
+            break  # only look at 1st logo
+
+    return brand_converter(matched_target), matched_coord, this_conf
+
 def phishpedia_classifier_OCR(pred_classes, pred_boxes, 
                           domain_map_path:str,
                           model, ocr_model, logo_feat_list, file_name_list, shot_path:str, 
@@ -221,14 +220,10 @@ def phishpedia_classifier_OCR(pred_classes, pred_boxes,
         domain_map = pickle.load(handle)
         
     # look at boxes for logo class only
-    # print(pred_classes)
-    logo_boxes = pred_boxes[pred_classes==0] 
-#     print('number of logo boxes:', len(logo_boxes))
-    matched_coord = None
-    siamese_conf = None
-    
+    logo_boxes = pred_boxes[pred_classes==0]
+    matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
+
     # run logo matcher
-    pred_target = None
     if len(logo_boxes) > 0:
         # siamese prediction for logo box
         for i, coord in enumerate(logo_boxes):
@@ -239,18 +234,21 @@ def phishpedia_classifier_OCR(pred_classes, pred_boxes,
                                                          shot_path, bbox, t_s=ts, grayscale=False)
             
             # domain matcher to avoid FP
-            if (matched_target is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in matched_domain):
-                # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-                if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
-                    matched_target = None # ignore the prediction
+            if matched_target is not None:
+                if tldextract.extract(url).domain+ '.'+tldextract.extract(url).suffix not in matched_domain:
+                    # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
+                    if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
+                        matched_target = None # ignore the prediction
+                        matched_domain = None # ignore the prediction
+                        this_conf = None
+                else: # benign, real target
+                    matched_target = None  # ignore the prediction
+                    matched_domain = None  # ignore the prediction
                     this_conf = None
-                pred_target = matched_target
-                matched_coord = coord
-                siamese_conf = this_conf
                 break # break if target is matched
             break # only look at 1st logo
 
-    return brand_converter(pred_target), matched_coord, siamese_conf
+    return brand_converter(matched_target), matched_coord, this_conf
 
 
 def phishpedia_classifier_logo(logo_boxes,
@@ -276,32 +274,31 @@ def phishpedia_classifier_logo(logo_boxes,
         domain_map = pickle.load(handle)
 
     print('number of logo boxes:', len(logo_boxes))
-    matched_coord = None
-    siamese_conf = None
+    matched_target, matched_domain, matched_coord, this_conf = None, None, None, None
 
-    # run logo matcher
-    pred_target = None
     if len(logo_boxes) > 0:
         # siamese prediction for logo box
         for i, coord in enumerate(logo_boxes):
             min_x, min_y, max_x, max_y = coord
             bbox = [float(min_x), float(min_y), float(max_x), float(max_y)]
-            target_this, domain_this, this_conf = siamese_inference(model, domain_map,
+            matched_target, matched_domain, this_conf = siamese_inference(model, domain_map,
                                                                     logo_feat_list, file_name_list,
                                                                     shot_path, bbox, t_s=ts, grayscale=False)
 
             # domain matcher to avoid FP
-            if (target_this is not None) and (tldextract.extract(url).domain+'.'+tldextract.extract(url).suffix not in domain_this):
-                # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
-                if target_this == 'GoDaddy' or target_this == "Webmail Provider" or target_this == "Government of the United Kingdom":
-                    target_this = None  # ignore the prediction
+            if matched_target is not None:
+                if tldextract.extract(url).domain + '.' + tldextract.extract(url).suffix not in matched_domain:
+                    # avoid fp due to godaddy domain parking, ignore webmail provider (ambiguous)
+                    if matched_target == 'GoDaddy' or matched_target == "Webmail Provider" or matched_target == "Government of the United Kingdom":
+                        matched_target = None  # ignore the prediction
+                        matched_domain = None  # ignore the prediction
+                        this_conf = None
+                else:  # benign, real target
+                    matched_target = None  # ignore the prediction
+                    matched_domain = None  # ignore the prediction
                     this_conf = None
-                pred_target = target_this
-                matched_coord = coord
-                siamese_conf = this_conf
                 break  # break if target is matched
-            if i >= 1: # only look at top-1 logo
-                break
+            break
 
-    return brand_converter(pred_target), matched_coord, siamese_conf
+    return brand_converter(matched_target), matched_coord, this_conf
 
