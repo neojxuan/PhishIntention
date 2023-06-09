@@ -55,13 +55,11 @@ else
   output_file="src.zip"
   # Download the file using wget
   wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
-  dir_name=$(unzip -l src.zip | awk '/^[^ ]/ {print $4}' | awk -F'/' '{print $1}' | uniq)
-  echo $dir_name
   # Remove the directory if it already exists
   if [ -d "src/" ]; then
       rm -rf "src/"
   fi
-  unzip -o src.zip
+  unzip -l src.zip
   rm src.zip
 fi
 
