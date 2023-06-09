@@ -58,6 +58,11 @@ else
   # Remove the directory if it already exists
   unzip -l -o src.zip
   rm src.zip
+  # download domain_map.pkl
+  cd src/phishpedia_siamese
+  file_id="1nTIC6311dvdY4cGsrI4c3WMndSauuHSm"
+  output_file="domain_map.pkl"
+  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" && rm -rf /tmp/cookies.txt
 fi
 
 # Replace the placeholder in the YAML template
