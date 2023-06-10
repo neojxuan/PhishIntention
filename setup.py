@@ -77,6 +77,12 @@ setup(name='phishintention',
           'gspread',
           'oauth2client',
           'lxml',
+          'selenium==3.141.0',
+          'helium',
+          'h2',
+          'hyperframe',
+          'fuzzywuzzy',
+          'h11==0.8.1',
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
