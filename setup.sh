@@ -7,7 +7,7 @@ CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
 
 # # Create a new conda environment with Python 3.7
-ENV_NAME="myenv"
+ENV_NAME="py38"
 
 # Check if the environment already exists
 conda info --envs | grep -w "$ENV_NAME" > /dev/null
@@ -39,7 +39,7 @@ conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
 
 # Install PhishIntention
 conda run -n "$ENV_NAME" pip install -v .
-package_location=$(conda run -n myenv pip show phishintention | grep Location | awk '{print $2}')
+package_location=$(conda run -n "$ENV_NAME" pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
   echo "Package PhishIntention not found in the Conda environment myenv."
