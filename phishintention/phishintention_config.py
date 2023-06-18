@@ -66,7 +66,8 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
     if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
             and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])):
         subprocess.run(
-            "unzip -l {}".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH']),
+            "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
+                                     configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0] ),
             shell=True,
         )
 
