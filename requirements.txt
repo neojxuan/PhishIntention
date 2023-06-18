@@ -1,13 +1,14 @@
 scipy
 tldextract
 opencv-python
-selenium==4.0.0
+h11==0.13.0
+h2==4.1.0
+selenium==3.141.0
+pyopenssl==22.0.0
 selenium-wire==4.4.0
 helium
 httpcore
-h2
 hyperframe
-h11
 webdriver-manager
 pandas
 numpy

@@ -22,25 +22,23 @@ else
    conda create -n "$ENV_NAME" python=3.8
    conda activate "$ENV_NAME"
 fi
+# Set Conda environment as an environment variable
+export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 
-#mkl_path=$(conda info --base)/envs/"$ENV_NAME"/lib
-#echo "MKL path is $mkl_path"
-## Export the LD_LIBRARY_PATH environment variable
-#export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$mkl_path"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda activate "$ENV_NAME"
-pip install -r requirements.txt
-pip install cryptography==38.0.4
+conda run -n "$ENV_NAME" pip install -r requirements.txt
+conda run -n "$ENV_NAME" pip install cryptography==38.0.4
 conda install typing_extensions
-pip install torch==1.9.0 torchvision -f \
+conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
 
-python -m pip install detectron2 -f \
+conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
   https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
 
 # Install PhishIntention
-pip install -v .
+conda run -n "$ENV_NAME" pip install -v .
 package_location=$(pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
