@@ -18,7 +18,6 @@ lxml
 cryptography==38.0.4
 h11==0.8.1
 h2==4.1.0
-helium
 httpcore
 hyperframe
 pyopenssl==22.0.0
