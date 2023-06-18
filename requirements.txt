@@ -21,6 +21,7 @@ h2==4.1.0
 helium
 httpcore
 hyperframe
-selenium==4.0.0
 pyopenssl==22.0.0
 selenium-wire
+selenium==4.0.0
+

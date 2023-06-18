@@ -28,8 +28,8 @@ export MYENV=$(conda info --base)/envs/"$ENV_NAME"
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
 conda activate "$ENV_NAME"
-conda run -n "$ENV_NAME" pip install -r requirements.txt
 conda install typing_extensions
+
 conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
 
@@ -63,4 +63,5 @@ else
 fi
 
 # Replace the placeholder in the YAML template
-sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$FILEDIR/phishintention/configs.yaml"
+sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/src/configs.yaml"
+conda run -n "$ENV_NAME" pip install -r requirements.txt
