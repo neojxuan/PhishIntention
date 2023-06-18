@@ -48,6 +48,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
     # element recognition model
     AWL_CFG_PATH = configs['AWL_MODEL']['CFG_PATH']
     AWL_WEIGHTS_PATH = configs['AWL_MODEL']['WEIGHTS_PATH']
+    print(AWL_WEIGHTS_PATH)
     AWL_CONFIG, AWL_MODEL = element_config(rcnn_weights_path=AWL_WEIGHTS_PATH,
                                            rcnn_cfg_path=AWL_CFG_PATH, device=device)
 
