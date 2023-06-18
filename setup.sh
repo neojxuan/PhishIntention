@@ -64,4 +64,5 @@ fi
 
 # Replace the placeholder in the YAML template
 sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/src/configs.yaml"
+cd "$FILEDIR"
 conda run -n "$ENV_NAME" pip install -r requirements.txt
