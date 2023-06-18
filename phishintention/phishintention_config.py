@@ -39,7 +39,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
 
     #################### '''Default''' ####################
     if cfg_path is None:
-        with open(os.path.join(os.path.dirname(__file__), 'configs.yaml')) as file:
+        with open(os.path.join(os.path.dirname(__file__), 'src', 'configs.yaml')) as file:
             configs = yaml.load(file, Loader=yaml.FullLoader)
     else:
         with open(cfg_path) as file:

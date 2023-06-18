@@ -1,14 +1,6 @@
 scipy
 tldextract
 opencv-python
-h11==0.8.1
-h2==4.1.0
-selenium
-pyopenssl==22.0.0
-selenium-wire==4.4.0
-helium
-httpcore
-hyperframe
 webdriver-manager
 pandas
 numpy
@@ -24,3 +16,11 @@ oauth2client
 editdistance
 lxml
 cryptography==38.0.4
+h11==0.8.1
+h2==4.1.0
+helium
+httpcore
+hyperframe
+selenium==4.0.0
+pyopenssl==22.0.0
+selenium-wire
