@@ -81,7 +81,7 @@ setup(name='phishintention',
           'h2',
           'hyperframe',
           'fuzzywuzzy',
-          'h11==0.8.1',
+          'h11',
       ],
       package_data={
             # If any package contains *.txt or *.rst files, include them:
