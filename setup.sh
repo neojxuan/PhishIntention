@@ -6,7 +6,7 @@ FILEDIR=$(pwd)
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
 
-# # Create a new conda environment with Python 3.7
+# # Create a new conda environment with Python 3.8
 ENV_NAME="myenv"
 
 # Check if the environment already exists
@@ -17,8 +17,8 @@ if [ $? -eq 0 ]; then
    echo "Activating Conda environment $ENV_NAME"
    conda activate "$ENV_NAME"
 else
-   # If the environment doesn't exist, create it with Python 3.7 and activate it
-   echo "Creating and activating new Conda environment $ENV_NAME with Python 3.7"
+   # If the environment doesn't exist, create it with Python 3.8 and activate it
+   echo "Creating and activating new Conda environment $ENV_NAME with Python 3.8"
    conda create -n "$ENV_NAME" python=3.8
    conda activate "$ENV_NAME"
 fi
@@ -66,6 +66,6 @@ else
 fi
 
 # Replace the placeholder in the YAML template
-sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/src/configs.yaml"
+sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/configs.yaml"
 cd "$FILEDIR"
 conda run -n "$ENV_NAME" pip install -r requirements.txt
