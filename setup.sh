@@ -56,13 +56,6 @@ else
   # Remove the directory if it already exists
   unzip -l -o src.zip && echo "Unzip completed successfully"
   rm src.zip
-#  # make sure the model is complete
-#  cd src/AWL_detector_utils/output/website_lr0.001
-#  file_id="1HWjE5Fv-c3nCDzLCBc7I3vClP1IeuP_I"
-#  output_file="model_final.pth"
-#  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" & wait
-#  rm -rf /tmp/cookies.txt
-#  cd ../../../../
 
   # download domain_map.pkl
   cd src/phishpedia_siamese
