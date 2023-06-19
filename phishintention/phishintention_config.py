@@ -39,7 +39,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
 
     #################### '''Default''' ####################
     if cfg_path is None:
-        with open(os.path.join(os.path.dirname(__file__), 'src', 'configs.yaml')) as file:
+        with open(os.path.join(os.path.dirname(__file__), 'configs.yaml')) as file:
             configs = yaml.load(file, Loader=yaml.FullLoader)
     else:
         with open(cfg_path) as file:
@@ -85,7 +85,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
             num_classes=configs['SIAMESE_MODEL']['NUM_CLASSES'],
             weights_path=configs['SIAMESE_MODEL']['WEIGHTS_PATH'],
             ocr_weights_path=configs['SIAMESE_MODEL']['OCR_WEIGHTS_PATH'],
-            targetlist_path=os.path.join(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0], "expand_targetlist"))
+            targetlist_path=configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])
         np.save(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS'), LOGO_FEATS)
         np.save(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FILES'), LOGO_FILES)
 
