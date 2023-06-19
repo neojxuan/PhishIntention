@@ -11,7 +11,10 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 if __name__ == '__main__':
 
-    AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(None, device='cuda')
+    AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, \
+        SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config('/home/ruofan/anaconda3/envs/myenv/lib/python3.8/site-packages/phishintention/configs.yaml',
+                                                                            device='cuda')
+    print('Number of protected logos = ', len(LOGO_FEATS)) # (3064, )
 
     date = datetime.today().strftime('%Y-%m-%d')
     print('Today is:', date)
