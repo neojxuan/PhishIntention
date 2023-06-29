@@ -54,7 +54,7 @@ else
   wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" & wait
   rm -rf /tmp/cookies.txt
   # Remove the directory if it already exists
-  unzip -l -o src.zip && echo "Unzip completed successfully"
+  unzip -o src.zip && echo "Unzip completed successfully"
   rm src.zip
 
   # download domain_map.pkl
