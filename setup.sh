@@ -22,12 +22,8 @@ else
    conda create -n "$ENV_NAME" python=3.8
    conda activate "$ENV_NAME"
 fi
-# Set Conda environment as an environment variable
-export MYENV=$(conda info --base)/envs/"$ENV_NAME"
-
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
-conda activate "$ENV_NAME"
 conda install typing_extensions
 
 conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
