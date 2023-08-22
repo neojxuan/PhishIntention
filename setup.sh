@@ -13,18 +13,15 @@ ENV_NAME="myenv"
 conda info --envs | grep -w "$ENV_NAME" > /dev/null
 
 if [ $? -eq 0 ]; then
-   # If the environment exists, activate it
    echo "Activating Conda environment $ENV_NAME"
    conda activate "$ENV_NAME"
 else
-   # If the environment doesn't exist, create it with Python 3.8 and activate it
    echo "Creating and activating new Conda environment $ENV_NAME with Python 3.8"
    conda create -n "$ENV_NAME" python=3.8
    conda activate "$ENV_NAME"
 fi
 
 # Get the CUDA and cuDNN versions, install pytorch, torchvision
-conda install typing_extensions
 
 conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
   "https://download.pytorch.org/whl/cu111/torch_stable.html"
