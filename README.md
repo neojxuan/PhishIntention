@@ -87,6 +87,7 @@ cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
 ```
+If you meet any problem in downloading the models, you can download manually from here https://huggingface.co/Kelsey98/PhishIntention.
 
 2.
 To test a single site
