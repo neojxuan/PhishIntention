@@ -37,7 +37,7 @@ phishintention">Website</a> •
    - Else not a CRP page but have done <b>CRP Locator</b> before, ```Return Benign, None``` 
 
 - Step 4: <b>CRP Locator</b>
-   - Find login/signup links and click, if reach a CRP page at the end, go back to step 1 <b>Abstract Layout detector</b> with updated URL and screenshot
+   - Find login/signup links and click, if reach a CRP page at the end, go back to step 1 <b>Abstract Layout detector</b> with an updated URL and screenshot
    - Else cannot reach a CRP page, ```Return Benign, None``` 
    
 - Step 5: 
@@ -99,7 +99,7 @@ cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
 ```
-If you meet any problem in downloading the models, you can download manually from here https://huggingface.co/Kelsey98/PhishIntention.
+If you encounter any problem in downloading the models, you can download them manually from here https://huggingface.co/Kelsey98/PhishIntention.
 
 2.
 To test a single site
@@ -131,13 +131,13 @@ plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
 
-Or run in terminal to test a list of sites, copy run.py to your local machine and run
+Or run in the terminal to test a list of sites, copy run.py to your local machine and run
 ```
 python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
 ```
 
 <!--## Use it as a repository
-First install the requirements
+First, install the requirements
 Then, run
 ```
 pip install -r requirements.txt
@@ -147,31 +147,8 @@ Please see detailed instructions in [phishintention/README.md](phishintention/RE
 
 
 ## Miscellaneous
-<!--  - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing): And then move the models to your **PhishIntention package**.
-Make sure that it follows this structure:
-```
-Under phishintention/phishintention/src
-  |___ AWL_detector_utils/: scripts for abstract layout detector 
-      |__ output/
-          |__ website_lr0.001/
-              |__ model_final.pth
-  |___ crp_classifier_utils/: scripts for CRP classifier
-          |__ output/
-              |__ Increase_resolution_lr0.005/
-                  |__ BiT-M-R50x1V2_0.005.pth.tar
-  |___ crp_locator_utils/: scripts for CRP locator 
-      |__ login_finder/
-          |__ output/
-              |__ lr0.001_finetune/
-                  |__ model_final.pth
-  |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
-      |__ demo_downgrade.pth.tar
-      |__ output/
-          |__ targetlist_lr0.01/
-              |__ bit.pth.tar
-``` -->
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- The phishing discovery crawling scripts is [here](https://github.com/lindsey98/MyScrapy/tree/main).
+- The phishing discovery crawling script is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
 ## Citation
 Please consider citing our work :)
