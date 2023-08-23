@@ -14,11 +14,16 @@ phishintention">Website</a> •
 
 ## PhishIntention
 - This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision-Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
+
+- Existing reference-based phishing detectors:
+   - :x: Using screenshots as references does not perfectly capture the brand intention
+   - :x: Using logos as references fails to capture the credential-taking intention
+     
 - The contributions of our paper:
-   - [x] We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
-   - [x] We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
-   - [x] We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
-   - [x] We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
+   - :white_check_mark: We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, this is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
+   - :white_check_mark: We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
+   - :white_check_mark: We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
+   - :white_check_mark: We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
     
 ## Framework
     
@@ -90,11 +95,12 @@ Requirements:
 - CUDA 11
 
 1. Create a local clone of PhishIntention
-```
+```bash
 git clone https://github.com/lindsey98/PhishIntention.git
 ```
+
 Run setup 
-```
+```bash
 cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
@@ -103,9 +109,11 @@ If you encounter any problem in downloading the models, you can download them ma
 
 2.
 To test a single site
-```commandline
+
+```bash
 conda activate myenv
 ```
+
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
@@ -131,20 +139,10 @@ plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
 
-Or run in the terminal to test a list of sites, copy run.py to your local machine and run
-```
+Or run in the terminal to test a list of sites, copy run.py to your local machine, and run
+```bash
 python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
 ```
-
-<!--## Use it as a repository
-First, install the requirements
-Then, run
-```
-pip install -r requirements.txt
-```
-Please see detailed instructions in [phishintention/README.md](phishintention/README.md)
--->
-
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
@@ -160,5 +158,5 @@ Please consider citing our work :)
   year={2022}
 }
 ```
-If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
+If you have any issues running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
 
