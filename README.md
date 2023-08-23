@@ -1,12 +1,24 @@
 # PhishIntention
+<div align="center">
+
+![Dialogues](https://img.shields.io/badge/Proctected\_Brands\_Size-277-green?style=flat-square)
+
+</div>
+<p align="center">
+  <a href="https://www.usenix.org/conference/usenixsecurity22/presentation/liu-ruofan">Paper</a> •
+  <a href="https://sites.google.com/view/
+phishintention">Website</a> •
+  <a href="https://www.youtube.com/watch?v=yU7FrlSJ818">Video</a> •
+  <a href="#citation">Citation</a>
+</p>
 
 ## PhishIntention
-- This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
+- This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision-Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
 - The contributions of our paper:
-   - [x] We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, is the first work which analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
-   - [x] We address various technical challenges in detecting the intentions by orchestrating multiple deep learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attack.
+   - [x] We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
+   - [x] We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
    - [x] We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
-   - [x] We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to the state-of-the-art phishing detection solutions.
+   - [x] We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
     
 ## Framework
     
@@ -161,9 +173,9 @@ Under phishintention/phishintention/src
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The phishing discovery crawling scripts is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
-## Contacts
+## Citation
 Please consider citing our work :)
-```
+```bibtex
 @inproceedings{liu2022inferring,
   title={Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision Based Approach},
   author={Liu, Ruofan and Lin, Yun and Yang, Xianglin and Ng, Siang Hwee and Divakaran, Dinil Mon and Dong, Jin Song},
