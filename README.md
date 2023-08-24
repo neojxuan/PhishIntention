@@ -1,12 +1,29 @@
 # PhishIntention
+<div align="center">
+
+![Dialogues](https://img.shields.io/badge/Proctected\_Brands\_Size-277-green?style=flat-square)
+
+</div>
+<p align="center">
+  <a href="https://www.usenix.org/conference/usenixsecurity22/presentation/liu-ruofan">Paper</a> •
+  <a href="https://sites.google.com/view/
+phishintention">Website</a> •
+  <a href="https://www.youtube.com/watch?v=yU7FrlSJ818">Video</a> •
+  <a href="#citation">Citation</a>
+</p>
 
 ## PhishIntention
-- This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
+- This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision-Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
+
+- Existing reference-based phishing detectors:
+   - :x: Using screenshots as references does not perfectly capture the brand intention
+   - :x: Using logos as references fails to capture the credential-taking intention
+     
 - The contributions of our paper:
-   - [x] We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, is the first work which analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
-   - [x] We address various technical challenges in detecting the intentions by orchestrating multiple deep learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attack.
-   - [x] We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
-   - [x] We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to the state-of-the-art phishing detection solutions.
+   - :white_check_mark: We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, this is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
+   - :white_check_mark: We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
+   - :white_check_mark: We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
+   - :white_check_mark: We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
     
 ## Framework
     
@@ -25,7 +42,7 @@
    - Else not a CRP page but have done <b>CRP Locator</b> before, ```Return Benign, None``` 
 
 - Step 4: <b>CRP Locator</b>
-   - Find login/signup links and click, if reach a CRP page at the end, go back to step 1 <b>Abstract Layout detector</b> with updated URL and screenshot
+   - Find login/signup links and click, if reach a CRP page at the end, go back to step 1 <b>Abstract Layout detector</b> with an updated URL and screenshot
    - Else cannot reach a CRP page, ```Return Benign, None``` 
    
 - Step 5: 
@@ -78,21 +95,25 @@ Requirements:
 - CUDA 11
 
 1. Create a local clone of PhishIntention
-```
+```bash
 git clone https://github.com/lindsey98/PhishIntention.git
 ```
+
 Run setup 
-```
+```bash
 cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
 ```
+If you encounter any problem in downloading the models, you can download them manually from here https://huggingface.co/Kelsey98/PhishIntention.
 
 2.
 To test a single site
-```commandline
+
+```bash
 conda activate myenv
 ```
+
 ```python
 from phishintention.phishintention_main import test
 import matplotlib.pyplot as plt
@@ -118,51 +139,18 @@ plt.title("Predicted screenshot with annotations")
 plt.show()
 ```
 
-Or run in terminal to test a list of sites, copy run.py to your local machine and run
-```
+Or run in the terminal to test a list of sites, copy run.py to your local machine, and run
+```bash
 python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
 ```
 
-<!--## Use it as a repository
-First install the requirements
-Then, run
-```
-pip install -r requirements.txt
-```
-Please see detailed instructions in [phishintention/README.md](phishintention/README.md)
--->
-
-
 ## Miscellaneous
-<!--  - :exclamation::exclamation: Unfortunetaly, Git LFS has bandwidth limit every month, so if you meet the following error "pickle.UnpicklingError: invalid load key 'v'". You can try to download the models directly from [here](https://drive.google.com/drive/folders/1XGiLfIeSHwoeoXEpMXhMR4M2tkj3pErJ?usp=sharing): And then move the models to your **PhishIntention package**.
-Make sure that it follows this structure:
-```
-Under phishintention/phishintention/src
-  |___ AWL_detector_utils/: scripts for abstract layout detector 
-      |__ output/
-          |__ website_lr0.001/
-              |__ model_final.pth
-  |___ crp_classifier_utils/: scripts for CRP classifier
-          |__ output/
-              |__ Increase_resolution_lr0.005/
-                  |__ BiT-M-R50x1V2_0.005.pth.tar
-  |___ crp_locator_utils/: scripts for CRP locator 
-      |__ login_finder/
-          |__ output/
-              |__ lr0.001_finetune/
-                  |__ model_final.pth
-  |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
-      |__ demo_downgrade.pth.tar
-      |__ output/
-          |__ targetlist_lr0.01/
-              |__ bit.pth.tar
-``` -->
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- The phishing discovery crawling scripts is [here](https://github.com/lindsey98/MyScrapy/tree/main).
+- The phishing discovery crawling script is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
-## Contacts
+## Citation
 Please consider citing our work :)
-```
+```bibtex
 @inproceedings{liu2022inferring,
   title={Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision Based Approach},
   author={Liu, Ruofan and Lin, Yun and Yang, Xianglin and Ng, Siang Hwee and Divakaran, Dinil Mon and Dong, Jin Song},
@@ -170,5 +158,5 @@ Please consider citing our work :)
   year={2022}
 }
 ```
-If you have any issue running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
+If you have any issues running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
 
