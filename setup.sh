@@ -56,6 +56,10 @@ else
   output_file="domain_map.pkl"
   wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" & wait
   rm -rf /tmp/cookies.txt
+
+  # git clone https://huggingface.co/Kelsey98/PhishIntention
+  # cp -r PhishIntention/* src/
+  # rm -rf PhishIntention
 fi
 
 # Replace the placeholder in the YAML template
