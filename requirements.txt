@@ -21,6 +21,6 @@ h11
 h2
 hyperframe
 pyopenssl==22.0.0
-selenium-wire
 selenium==4.0.0
+selenium-wire
 
