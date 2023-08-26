@@ -5,7 +5,7 @@ webdriver-manager
 pandas
 numpy
 tqdm
-Pillow
+Pillow~=9.5
 pathlib
 fvcore
 pycocotools
