@@ -64,15 +64,15 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
     print('Load protected logo list')
     if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
             and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])):
-        # subprocess.run(
-        #     "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
-        #                              configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0] ),
-        #     shell=True,
-        # )
         subprocess.run(
-            "unzip {}".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH']),
-            shell=True,
+             "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
+                                      configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0] ),
+             shell=True,
         )
+        #subprocess.run(
+        #    "unzip {}".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH']),
+        #    shell=True,
+        #)
 
     if os.path.exists(os.path.join(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH']), 'LOGO_FEATS.npy')) and reload_targetlist == False:
         SIAMESE_MODEL, OCR_MODEL = phishpedia_config_OCR_easy(
