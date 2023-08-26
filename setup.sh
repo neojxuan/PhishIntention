@@ -39,6 +39,7 @@ if [ -z "PhishIntention" ]; then
 else
   echo "Going to the directory of package PhishIntention in Conda environment myenv."
   cd "$package_location/phishintention" || exit
+  git lfs install
   git clone https://huggingface.co/Kelsey98/PhishIntention
   cp -r PhishIntention/* src/
   rm -rf PhishIntention
