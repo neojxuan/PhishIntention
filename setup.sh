@@ -39,27 +39,9 @@ if [ -z "PhishIntention" ]; then
 else
   echo "Going to the directory of package PhishIntention in Conda environment myenv."
   cd "$package_location/phishintention" || exit
-  pwd
-  # download models and unzip
-  file_id="1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd"
-  output_file="src.zip"
-  # Download the file using wget
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" & wait
-  rm -rf /tmp/cookies.txt
-  # Remove the directory if it already exists
-  unzip -o src.zip && echo "Unzip completed successfully"
-  rm src.zip
-
-  # download domain_map.pkl
-  cd src/phishpedia_siamese
-  file_id="1nTIC6311dvdY4cGsrI4c3WMndSauuHSm"
-  output_file="domain_map.pkl"
-  wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id='$file_id -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=$file_id" -O "$output_file" & wait
-  rm -rf /tmp/cookies.txt
-
-  # git clone https://huggingface.co/Kelsey98/PhishIntention
-  # cp -r PhishIntention/* src/
-  # rm -rf PhishIntention
+  git clone https://huggingface.co/Kelsey98/PhishIntention
+  cp -r PhishIntention/* src/
+  rm -rf PhishIntention
 fi
 
 # Replace the placeholder in the YAML template
