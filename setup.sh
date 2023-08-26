@@ -30,7 +30,6 @@ conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
   https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
 
 # Install PhishIntention
-conda run -n "$ENV_NAME" pip install -r requirements.txt
 conda run -n "$ENV_NAME" pip install -v .
 package_location=$(conda run -n "$ENV_NAME" pip show phishintention | grep Location | awk '{print $2}')
 
