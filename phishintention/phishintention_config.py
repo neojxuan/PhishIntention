@@ -64,7 +64,7 @@ def load_config(cfg_path: Union[str, None] = None, reload_targetlist=False, devi
     print('Load protected logo list')
     if configs['SIAMESE_MODEL']['TARGETLIST_PATH'].endswith('.zip') \
             and not os.path.isdir('{}'.format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0])):
-        subprocess.run('cd {} && unzip expand_targetlist.zip'.format(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH'])), shell=True)
+        subprocess.run('cd {} && unzip expand_targetlist.zip -d .'.format(os.path.dirname(configs['SIAMESE_MODEL']['TARGETLIST_PATH'])), shell=True)
         #subprocess.run(
         #     "unzip {} -d {}/".format(configs['SIAMESE_MODEL']['TARGETLIST_PATH'],
         #                              configs['SIAMESE_MODEL']['TARGETLIST_PATH'].split('.zip')[0] ),
