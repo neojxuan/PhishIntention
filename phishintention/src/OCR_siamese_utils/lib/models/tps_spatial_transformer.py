@@ -74,7 +74,9 @@ class TPSSpatialTransformer(nn.Module):
     forward_kernel[:N, -2:].copy_(target_control_points)
     forward_kernel[-2:, :N].copy_(target_control_points.transpose(0, 1))
     # compute inverse matrix
-    inverse_kernel = torch.inverse(forward_kernel)
+    device = forward_kernel.device
+    # inverse_kernel = torch.inverse(forward_kernel)
+    inverse_kernel = torch.inverse(forward_kernel.to("cpu")).to(device)
 
     # create target cordinate matrix
     HW = self.target_height * self.target_width
