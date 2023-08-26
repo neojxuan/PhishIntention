@@ -11,8 +11,11 @@ os.environ['KMP_DUPLICATE_LIB_OK']='True'
 
 if __name__ == '__main__':
 
+    result = subprocess.run("conda run -n myenv pip show phishintention | grep Location | awk '{print $2}'", capture_output=True, shell=True)
+    package_location = result.stdout.decode('utf-8').strip()
+
     AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, \
-        SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config('/home/ruofan/anaconda3/envs/myenv/lib/python3.8/site-packages/phishintention/configs.yaml',
+        SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(f"{package_location}/phishintention/configs.yaml",
                                                                             device='cuda')
     print('Number of protected logos = ', len(LOGO_FEATS)) # (3064, )
 
