@@ -13,6 +13,7 @@ phishintention">Website</a> •
 </p>
 
 ## PhishIntention
+-
 - This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision-Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
 
 - Existing reference-based phishing detectors:
@@ -24,9 +25,9 @@ phishintention">Website</a> •
    - :white_check_mark: We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
    - :white_check_mark: We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
    - :white_check_mark: We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
-    
+
 ## Framework
-    
+  -
 <img src="phishintention/big_pic/Screenshot 2021-08-13 at 9.15.56 PM.png" style="width:2000px;height:350px"/>
 
 ```Input```: a screenshot, ```Output```: Phish/Benign, Phishing target
@@ -49,9 +50,12 @@ phishintention">Website</a> •
     - If reach a CRP + Siamese report target: ```Return Phish, Phishing target``` 
     - Else ```Return Benign, None``` 
     
-    
+## Updates
+-
+[2023-09-23] ❗❗❗ Somehow the model downloading in setup.sh does not always work because of the git lfs limit 😢 , alternatively, you can download all the models from [this link](https://drive.google.com/file/d/1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd/view?usp=sharing), and put them into the package. 
     
 ## Project structure
+-
 ```
 src
     |___ AWL_detector_utils/: scripts for abstract layout detector 
@@ -91,6 +95,7 @@ phishintention_main.py: phish-discovery experiment evaluation script for PhishIn
 ```
 
 ## Instructions
+-
 Requirements: 
 - CUDA 11
 
@@ -145,10 +150,12 @@ python run.py --folder <folder you want to test e.g. phishintention/datasets/tes
 ```
 
 ## Miscellaneous
+-
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
 - The phishing discovery crawling script is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
 ## Citation
+-
 Please consider citing our work :)
 ```bibtex
 @inproceedings{liu2022inferring,
