@@ -21,15 +21,19 @@ else
    conda activate "$ENV_NAME"
 fi
 
-# Get the CUDA and cuDNN versions, install pytorch, torchvision
+# Install pytorch, torchvision, detectron2
+if command -v nvcc &> /dev/null; then
+   conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f "https://download.pytorch.org/whl/cu111/torch_stable.html"
+   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+else
+   conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+fi
 
-conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f \
-  "https://download.pytorch.org/whl/cu111/torch_stable.html"
+# Install other requirements
+conda run -n "$ENV_NAME" pip install -r requirements.txt
 
-conda run -n "$ENV_NAME" python -m pip install detectron2 -f \
-  https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
-
-# Install PhishIntention
+# Install PhishIntention as a package
 conda run -n "$ENV_NAME" pip install -v .
 package_location=$(conda run -n "$ENV_NAME" pip show phishintention | grep Location | awk '{print $2}')
 
@@ -41,10 +45,11 @@ else
   cd "$package_location/phishintention" || exit
   pip install gdown
   gdown --id 1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd
+  sudo apt-get update
+  sudo apt-get install unzip
   unzip src.zip
 fi
 
 # Replace the placeholder in the YAML template
 sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/configs.yaml"
 cd "$FILEDIR"
-conda run -n "$ENV_NAME" pip install -r requirements.txt
