@@ -39,10 +39,9 @@ if [ -z "PhishIntention" ]; then
 else
   echo "Going to the directory of package PhishIntention in Conda environment myenv."
   cd "$package_location/phishintention" || exit
-  git lfs install
-  git clone https://huggingface.co/Kelsey98/PhishIntention
-  cp -r PhishIntention/* src/
-  rm -rf PhishIntention
+  pip install gdown
+  gdown --id 1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd
+  unzip src.zip
 fi
 
 # Replace the placeholder in the YAML template
