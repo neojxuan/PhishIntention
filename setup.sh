@@ -5,37 +5,45 @@ FILEDIR=$(pwd)
 # Source the Conda configuration
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
-
-# # Create a new conda environment with Python 3.8
-ENV_NAME="myenv"
-
 # Check if the environment already exists
-conda info --envs | grep -w "$ENV_NAME" > /dev/null
+conda info --envs | grep -w "myenv" > /dev/null
 
 if [ $? -eq 0 ]; then
-   echo "Activating Conda environment $ENV_NAME"
-   conda activate "$ENV_NAME"
+   echo "Activating Conda environment myenv"
+   conda activate myenv
 else
    echo "Creating and activating new Conda environment $ENV_NAME with Python 3.8"
-   conda create -n "$ENV_NAME" python=3.8
-   conda activate "$ENV_NAME"
+   conda create -n myenv python=3.8
+   conda activate myenv
 fi
 
 # Install pytorch, torchvision, detectron2
-if command -v nvcc &> /dev/null; then
-   conda run -n "$ENV_NAME" pip install torch==1.9.0 torchvision -f "https://download.pytorch.org/whl/cu111/torch_stable.html"
-   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+OS=$(uname -s)
+
+if [[ "$OS" == "Darwin" ]]; then
+  echo "Installing PyTorch and torchvision for macOS."
+  pip install torch==1.9.0 torchvision==0.10.0 torchaudio==0.9.0
+  python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
 else
-   conda run -n "$ENV_NAME" pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
-   conda run -n "$ENV_NAME" python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+  # Check if NVIDIA GPU is available for Linux and Windows
+  if command -v nvcc &> /dev/null; then
+    echo "CUDA is detected, installing GPU-supported PyTorch and torchvision."
+    pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+    python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
+  else
+    echo "No CUDA detected, installing CPU-only PyTorch and torchvision."
+    pip install torch==1.9.0+cpu torchvision==0.10.0+cpu torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
+    python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
+  fi
 fi
 
+
 # Install other requirements
-conda run -n "$ENV_NAME" pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Install PhishIntention as a package
-conda run -n "$ENV_NAME" pip install -v .
-package_location=$(conda run -n "$ENV_NAME" pip show phishintention | grep Location | awk '{print $2}')
+pip install -v .
+package_location=$(conda run -n "myenv" pip show phishintention | grep Location | awk '{print $2}')
 
 if [ -z "PhishIntention" ]; then
   echo "Package PhishIntention not found in the Conda environment myenv."
