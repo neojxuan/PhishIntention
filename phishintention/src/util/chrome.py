@@ -4,6 +4,7 @@ import time
 import requests
 from seleniumwire import webdriver
 import re
+from selenium.webdriver.common.by import By
 
 def initialize_chrome_settings(lang_txt:str):
     '''
@@ -88,7 +89,7 @@ def get_page_text(driver):
     :return: text
     '''
     try:
-        body = driver.find_element_by_tag_name('body').text
+        body = driver.find_element(By.TAG_NAME, 'body').text
     except NoSuchElementException as e: # if no body tag, just get all text
         print(e)
         try:
