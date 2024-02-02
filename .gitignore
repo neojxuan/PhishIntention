@@ -5,3 +5,5 @@ discovery_results/
 *.zip
 */__pycache__/*
 *.pth*
+models/*
+*.DS_Store
