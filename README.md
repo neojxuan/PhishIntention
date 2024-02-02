@@ -26,7 +26,7 @@ phishintention">Website</a> •
    - :white_check_mark: We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
 
 ## Framework
-<img src="phishintention/big_pic/Screenshot 2021-08-13 at 9.15.56 PM.png" style="width:2000px;height:350px"/>
+<img src="big_pic/Screenshot 2021-08-13 at 9.15.56 PM.png" style="width:2000px;height:350px"/>
 
 ```Input```: a screenshot, ```Output```: Phish/Benign, Phishing target
 - Step 1: Enter <b>Abstract Layout detector</b>, get predicted elements
@@ -48,105 +48,35 @@ phishintention">Website</a> •
     - If reach a CRP + Siamese report target: ```Return Phish, Phishing target``` 
     - Else ```Return Benign, None``` 
     
-## Updates
-- [2023-09-23] ❗❗❗ Somehow the model downloading in setup.sh does not always work because of the git lfs limit 😢 , alternatively, you can download all the models from [this link](https://drive.google.com/file/d/1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd/view?usp=sharing), and put them into the package. 
-    
-## Project structure
-```
-src
-    |___ AWL_detector_utils/: scripts for abstract layout detector 
-        |__ output/
-            |__ website_lr0.001/
-                |__ model_final.pth
-    |___ crp_classifier_utils/: scripts for CRP classifier
-            |__ output/
-                |__ Increase_resolution_lr0.005/
-                    |__ BiT-M-R50x1V2_0.005.pth.tar
-    |___ crp_locator_utils/: scripts for CRP locator 
-        |__ login_finder/
-            |__ output/
-                |__ lr0.001_finetune/
-                    |__ model_final.pth
-    |___ OCR_siamese_utils/: scripts for OCR-aided Siamese
-        |__ demo_downgrade.pth.tar
-        |__ output/
-            |__ targetlist_lr0.01/
-                |__ bit.pth.tar
-    |___ util/: other scripts (chromedriver utilities)
-    
-    |___ phishpedia_siamese/: inference script for siamese (for Phishpedia not PhishIntention)
-        |__ domain_map.pkl
-        |__ expand_targetlist/
-        
-    |___ layout_matcher/: deprecated scripts
-    
-    |___ AWL_detector.py: inference script for AWL detector
-    |___ crp_classifier.py: inference script for CRP classifier
-    |___ OCR_aided_siamese.py: inference script for OCR-aided siamese
-    |___ crp_locator.py: inference script for CRP-Transition locator
-    |___ pipeline_eval.py: evaluation script 
-
-phishintention_config.py: phish-discovery experiment config file for PhishIntention
-phishintention_main.py: phish-discovery experiment evaluation script for PhishIntention
-```
-
 ## Instructions
-Requirements: 
-- CUDA 11
-
-1. Create a local clone of PhishIntention
+Requirements: CUDA >= 11, install packages by
 ```bash
 git clone https://github.com/lindsey98/PhishIntention.git
-```
-
-Run setup 
-```bash
 cd PhishIntention
 chmod +x setup.sh
 ./setup.sh
 ```
-If you encounter any problem in downloading the models, you can download them manually from here https://huggingface.co/Kelsey98/PhishIntention.
 
-2.
-To test a single site
-
+Run in the terminal to test a list of sites
 ```bash
-conda activate myenv
+conda activate phishintention
+python phishintention.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --output_txt <where you want to save the results e.g. test.txt>
 ```
 
-```python
-from phishintention.phishintention_main import test
-import matplotlib.pyplot as plt
-from phishintention.phishintention_config import load_config
-from phishintention.phishintention_main import element_recognition, phishpedia_classifier_OCR, credential_classifier_mixed_al, driver_loader, dynamic_analysis
-
-# use full model
-url = open("phishintention/datasets/test_sites/accounts.g.cdcde.com/info.txt").read().strip()
-screenshot_path = "phishintention/datasets/test_sites/accounts.g.cdcde.com/shot.png"
-device = 'cuda' # or device = 'cpu'
-cfg_path = None # None means use default config.yaml
-AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH = load_config(cfg_path, device)
-
-phish_category, pred_target, plotvis, siamese_conf, dynamic, _, pred_boxes, pred_classes = test(url, screenshot_path,
-                                                                      AWL_MODEL, CRP_CLASSIFIER, CRP_LOCATOR_MODEL, SIAMESE_MODEL, OCR_MODEL, SIAMESE_THRE, LOGO_FEATS, LOGO_FILES, DOMAIN_MAP_PATH)
-
-print('Phishing (1) or Benign (0) ?', phish_category)
-print('What is its targeted brand if it is a phishing ?', pred_target)
-print('What is the siamese matching confidence ?', siamese_conf)
-print('Where are the predicted bounding boxes (in [x_min, y_min, x_max, y_max])?', pred_boxes)
-plt.imshow(plotvis[:, :, ::-1])
-plt.title("Predicted screenshot with annotations")
-plt.show()
+## Project structure
+```
+|_ configs: Configuration files for the object detection models and the gloal configurations
+|_ modules: Inference code for layout detector, CRP classifier, CRP locator, and OCR-aided siamese model
+|_ models: the model weights and reference list
+|_ ocr_lib: external code for the OCR encoder
+|_ utils
+|_ configs.py: load configuration files
+|_ phishintention.py: main script
 ```
 
-Or run in the terminal to test a list of sites, copy run.py to your local machine, and run
-```bash
-python run.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --results <where you want to save the results e.g. test.txt> --no_repeat
-```
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
-- The phishing discovery crawling script is [here](https://github.com/lindsey98/MyScrapy/tree/main).
 
 ## Citation
 Please consider citing our work :)
@@ -158,5 +88,4 @@ Please consider citing our work :)
   year={2022}
 }
 ```
-If you have any issues running our code, you can raise an issue or send an email to liu.ruofan16@u.nus.edu, dcsliny@nus.eud.sg, and dcsdjs@nus.edu.sg
-
+If you have any issues running our code, you can raise an issue or send an email to [liu.ruofan16@u.nus.edu, lin_yun@sjtu.edu.cn, dcsdjs@nus.edu.sg](mailto:liu.ruofan16@u.nus.edu,lin_yun@sjtu.edu.cn,dcsdjs@nus.edu.sg)

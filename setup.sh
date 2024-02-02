@@ -1,23 +1,40 @@
 #!/bin/bash
+retry_count=3  # Number of retries
+
+download_with_retry() {
+  local file_id=$1
+  local file_name=$2
+  local count=0
+
+  until [ $count -ge $retry_count ]
+  do
+    gdown --id "$file_id" -O "$file_name" && break  # attempt to download and break if successful
+    count=$((count+1))
+    echo "Retry $count of $retry_count..."
+    sleep 1  # wait for 5 seconds before retrying
+  done
+
+  if [ $count -ge $retry_count ]; then
+    echo "Failed to download $file_name after $retry_count attempts."
+  fi
+}
 
 FILEDIR=$(pwd)
-
-# Source the Conda configuration
 CONDA_BASE=$(conda info --base)
 source "$CONDA_BASE/etc/profile.d/conda.sh"
-# Check if the environment already exists
-conda info --envs | grep -w "myenv" > /dev/null
+
+conda info --envs | grep -w "phishintention" > /dev/null
 
 if [ $? -eq 0 ]; then
-   echo "Activating Conda environment myenv"
-   conda activate myenv
+   echo "Activating Conda environment phishintention"
+   conda activate phishintention
 else
-   echo "Creating and activating new Conda environment $ENV_NAME with Python 3.8"
-   conda create -n myenv python=3.8
-   conda activate myenv
+   echo "Creating and activating new Conda environment phishintention with Python 3.8"
+   conda create -n phishintention python=3.8
+   conda activate phishintention
 fi
 
-# Install pytorch, torchvision, detectron2
+
 OS=$(uname -s)
 
 if [[ "$OS" == "Darwin" ]]; then
@@ -26,7 +43,7 @@ if [[ "$OS" == "Darwin" ]]; then
   python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.9/index.html"
 else
   # Check if NVIDIA GPU is available for Linux and Windows
-  if command -v nvcc &> /dev/null; then
+  if command -v nvcc || command -v nvidia-smi &> /dev/null; then
     echo "CUDA is detected, installing GPU-supported PyTorch and torchvision."
     pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 torchaudio==0.9.0 -f "https://download.pytorch.org/whl/torch_stable.html"
     python -m pip install detectron2 -f "https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html"
@@ -37,27 +54,68 @@ else
   fi
 fi
 
+python -m pip install -r requirements.txt
+python -m pip install helium
+python -m pip install webdriver-manager
+python -m pip install gdown
 
-# Install other requirements
-pip install -r requirements.txt
+## Download models
+echo "Going to the directory of package Phishpedia in Conda environment myenv."
+mkdir -p models/
+cd models/
 
-# Install PhishIntention as a package
-pip install -v .
-package_location=$(conda run -n "myenv" pip show phishintention | grep Location | awk '{print $2}')
 
-if [ -z "PhishIntention" ]; then
-  echo "Package PhishIntention not found in the Conda environment myenv."
-  exit 1
+# RCNN model weights
+if [ -f "layout_detector.pth" ]; then
+  echo "layout_detector weights exists... skip"
 else
-  echo "Going to the directory of package PhishIntention in Conda environment myenv."
-  cd "$package_location/phishintention" || exit
-  pip install gdown
-  gdown --id 1zw2MViLSZRemrEsn2G-UzHRTPTfZpaEd
-  sudo apt-get update
-  sudo apt-get install unzip
-  unzip src.zip
+  download_with_retry 1HWjE5Fv-c3nCDzLCBc7I3vClP1IeuP_I layout_detector.pth
 fi
 
+
+# Faster RCNN config
+if [ -f "crp_classifier.pth.tar" ]; then
+  echo "CRP classifier weights exists... skip"
+else
+  download_with_retry 1igEMRz0vFBonxAILeYMRWTyd7A9sRirO crp_classifier.pth.tar
+fi
+
+
+# Siamese model weights
+if [ -f "crp_locator.pth" ]; then
+  echo "crp_locator weights exists... skip"
+else
+  download_with_retry 1_O5SALqaJqvWoZDrdIVpsZyCnmSkzQcm crp_locator.pth
+fi
+
+
+if [ -f "ocr_pretrained.pth.tar" ]; then
+  echo "OCR pretrained model weights exists... skip"
+else
+  download_with_retry 15pfVWnZR-at46gqxd50cWhrXemP8oaxp ocr_pretrained.pth.tar
+fi
+
+if [ -f "ocr_siamese.pth.tar" ]; then
+  echo "OCR-siamese weights exists... skip"
+else
+  download_with_retry 1BxJf5lAcNEnnC0In55flWZ89xwlYkzPk ocr_siamese.pth.tar
+fi
+
+
+# Reference list
+if [ -f "expand_targetlist.zip" ]; then
+  echo "Reference list exists... skip"
+else
+  download_with_retry 1fr5ZxBKyDiNZ_1B6rRAfZbAHBBoUjZ7I expand_targetlist.zip
+fi
+
+# Domain map
+if [ -f "domain_map.pkl" ]; then
+  echo "Domain map exists... skip"
+else
+  download_with_retry 1qSdkSSoCYUkZMKs44Rup_1DPBxHnEKl1 domain_map.pkl
+fi
+
+
 # Replace the placeholder in the YAML template
-sed "s|CONDA_ENV_PATH_PLACEHOLDER|$package_location/phishintention|g" "$FILEDIR/phishintention/configs_template.yaml" > "$package_location/phishintention/configs.yaml"
-cd "$FILEDIR"
+echo "All packages installed successfully!"
