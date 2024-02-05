@@ -47,21 +47,6 @@ phishintention">Website</a> •
 - Step 5: 
     - If reach a CRP + Siamese report target: ```Return Phish, Phishing target``` 
     - Else ```Return Benign, None``` 
-    
-## Instructions
-Requirements: CUDA >= 11, install packages by
-```bash
-git clone https://github.com/lindsey98/PhishIntention.git
-cd PhishIntention
-chmod +x setup.sh
-./setup.sh
-```
-
-Run in the terminal to test a list of sites
-```bash
-conda activate phishintention
-python phishintention.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --output_txt <where you want to save the results e.g. test.txt>
-```
 
 ## Project structure
 ```
@@ -74,6 +59,45 @@ python phishintention.py --folder <folder you want to test e.g. phishintention/d
 |_ phishintention.py: main script
 ```
 
+## Instructions
+Requirements: 
+- Anaconda installed, please refer to the official installation guide: https://docs.anaconda.com/free/anaconda/install/index.html
+- CUDA >= 11
+  
+1. Create a local clone of PhishIntention
+```bash
+git clone https://github.com/lindsey98/PhishIntention.git
+cd PhishIntention
+```
+
+2. Setup
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+3. 
+```bash
+conda activate phishintention
+```
+
+4. Run
+```bash
+python phishintention.py --folder <folder you want to test e.g. phishintention/datasets/test_sites> --output_txt <where you want to save the results e.g. test.txt>
+```
+The testing folder should be in the structure of:
+
+```
+test_site_1
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+|__ html.txt (HTML source code, optional)
+test_site_2
+|__ info.txt (Write the URL)
+|__ shot.png (Save the screenshot)
+|__ html.txt (HTML source code, optional)
+......
+```
 
 ## Miscellaneous
 - In our paper, we also implement several phishing detection and identification baselines, see [here](https://github.com/lindsey98/PhishingBaseline)
