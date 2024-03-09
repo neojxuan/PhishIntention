@@ -16,14 +16,11 @@ phishintention">Website</a> •
 - This is the official implementation of "Inferring Phishing Intention via Webpage Appearance and Dynamics: A Deep Vision-Based Approach"USENIX'22 [link to paper](http://linyun.info/publications/usenix22.pdf), [link to our website](https://sites.google.com/view/phishintention/home)
 
 - Existing reference-based phishing detectors:
-   - :x: Using screenshots as references does not perfectly capture the brand intention
-   - :x: Using logos as references fails to capture the credential-taking intention
+   - :x: Subject to false positive because they **only capture brand intention**
      
 - The contributions of our paper:
-   - :white_check_mark: We propose a referenced-based phishing detection system that captures both brand intention and credential-taking intention. To the best of our knowledge, this is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
-   - :white_check_mark: We address various technical challenges in detecting the intentions by orchestrating multiple deep-learning models. By design, our system is robust against misleading legitimacies and HTML obfuscation attacks.
-   - :white_check_mark: We conduct extensive experiments to evaluate our system. The experiments evaluate the overall and step-wise effectiveness, robustness against various adversarial attacks, and usefulness in practice.
-   - :white_check_mark: We implement our system with a phishing monitoring system. It reports phishing webpages per day with the highest precision in comparison to state-of-the-art phishing detection solutions.
+   - :white_check_mark: We propose a referenced-based phishing detection system that captures both brand intention and **credential-taking intention**. To the best of our knowledge, this is the first work that analyzes both brand intention and credential-taking intentions in a systematic way for phishing detection.
+   - :white_check_mark: We set up a **phishing monitoring system**. It reports phishing webpages per day with the **highest precision** in comparison to state-of-the-art phishing detection solutions.
 
 ## Framework
 <img src="big_pic/Screenshot 2021-08-13 at 9.15.56 PM.png" style="width:2000px;height:350px"/>
