@@ -129,7 +129,7 @@ def cv_heuristic(driver, orig_url, old_screenshot_path,
 
     # CV-based login finder
     # predict elements
-    pred_classes, pred_boxes, _ = pred_rcnn(im=old_screenshot_path,
+    pred_boxes, pred_classes, _ = pred_rcnn(im=old_screenshot_path,
                                             predictor=login_model)
     # # visualize elements
     # check = vis(old_screenshot_path, pred_boxes, pred_classes)
