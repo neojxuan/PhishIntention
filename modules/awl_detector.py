@@ -48,7 +48,7 @@ def pred_rcnn(im, predictor):
         if im.shape[-1] == 4:
             im = cv2.cvtColor(im, cv2.COLOR_BGRA2BGR)
     else:
-        return None, None, None, None
+        return None, None, None
 
     outputs = predictor(im)
 
