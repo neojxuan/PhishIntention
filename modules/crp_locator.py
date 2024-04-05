@@ -140,7 +140,7 @@ def cv_heuristic(driver, orig_url, old_screenshot_path,
     if pred_boxes is None or len(pred_boxes) == 0:
         return reach_crp, time_deduct
 
-    for bbox in pred_boxes.detach().cpu().numpy()[: min(3, len(pred_boxes))]: # only for top3 boxes
+    for bbox in pred_boxes.numpy()[: min(3, len(pred_boxes))]: # only for top3 boxes
         x1, y1, x2, y2 = bbox
         center = ((x1 + x2) / 2, (y1 + y2) / 2)
         start_time = time.time()
