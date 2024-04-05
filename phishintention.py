@@ -50,8 +50,8 @@ class PhishIntentionWrapper:
             awl_detect_time += time.time() - start_time
 
             if pred_boxes is not None:
-                pred_boxes = pred_boxes.detach().cpu().numpy()
-                pred_classes = pred_classes.detach().cpu().numpy()
+                pred_boxes = pred_boxes.numpy()
+                pred_classes = pred_classes.numpy()
             plotvis = vis(screenshot_path, pred_boxes, pred_classes)
 
             # If no element is reported

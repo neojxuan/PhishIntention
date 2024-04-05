@@ -129,7 +129,7 @@ def cv_heuristic(driver, orig_url, old_screenshot_path,
 
     # CV-based login finder
     # predict elements
-    pred_classes, pred_boxes, _ = pred_rcnn(im=old_screenshot_path,
+    pred_boxes, pred_classes, _ = pred_rcnn(im=old_screenshot_path,
                                             predictor=login_model)
     # # visualize elements
     # check = vis(old_screenshot_path, pred_boxes, pred_classes)
@@ -140,18 +140,15 @@ def cv_heuristic(driver, orig_url, old_screenshot_path,
     if pred_boxes is None or len(pred_boxes) == 0:
         return reach_crp, time_deduct
 
-    for bbox in pred_boxes.detach().cpu().numpy()[: min(3, len(pred_boxes))]: # only for top3 boxes
-
-
+    for bbox in pred_boxes.numpy()[: min(3, len(pred_boxes))]: # only for top3 boxes
+        x1, y1, x2, y2 = bbox
+        center = ((x1 + x2) / 2, (y1 + y2) / 2)
+        start_time = time.time()
+        click_point(center[0], center[1])  # click center point of predicted bbox for safe
+        time_deduct += time.time() - start_time
+        
         # save redirected url
         try:
-            # temp fix
-            x1, y1, x2, y2 = bbox
-            center = ((x1 + x2) / 2, (y1 + y2) / 2)
-            start_time = time.time()
-            click_point(center[0], center[1])  # click center point of predicted bbox for safe
-            time_deduct += time.time() - start_time
-    
             start_time = time.time()
             current_url = driver.current_url
             driver.save_screenshot(new_screenshot_path) # save new screenshot
