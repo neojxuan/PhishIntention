@@ -53,8 +53,8 @@ def pred_rcnn(im, predictor):
     outputs = predictor(im)
 
     instances = outputs['instances']
-    pred_classes = instances.pred_classes  # tensor
-    pred_boxes = instances.pred_boxes.tensor  # Boxes object
+    pred_classes = instances.pred_classes.detach().cpu()  # tensor
+    pred_boxes = instances.pred_boxes.tensor.detach().cpu()  # Boxes object
     pred_scores = instances.scores  # tensor
 
     return pred_boxes, pred_classes, pred_scores
